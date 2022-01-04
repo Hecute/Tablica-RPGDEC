@@ -1,0 +1,6 @@
+RPGdeck jest aplikacją służącą do tworzenia map do gier typu Pen & Paper.
+Za ich pomocą można w łatwy sposób zwizualizować świat wykreowany przez Mistrza Gry czy ułatwić sesje chodzenia po jaskiniach.
+Projekt będzie umożliwiał tworzenie map terenów takich jak lasy, jaskinie, miasta czy konkretne budynki o dowolnym rozmiarze.
+Program będzie zawierał narzędzia do stawiania ścian, usuwania, wyboru tekstury i prostego meblowania (np. stawianie skrzyń czy stołów).
+Utworzoną mapę będzie można eksportować do pliku. Planujemy również  umożliwić przyszłym użytkownikom dodawać własne tekstury czy meble.
+	
