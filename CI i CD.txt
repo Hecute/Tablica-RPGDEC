@@ -1,9 +1,0 @@
-Zakres spotkań:
-Czas sprintu: 2 tygodnie
-Spotkania: poniedziałek/piątek
-Backlog refinement
-Planning
-Sprint review
-Retro
-
-GitHub: https://github.com/Hecute/Tablica-RPGDEC.git
