@@ -9,13 +9,15 @@ from sys import exit
 -meble
 -ściany
 -obiekty
--menu
+-Menu
 '''
 
 pygame.init()
 pygame.font.init()
 screen = pygame.display.set_mode((1000,720))
 bookmarks_buttons = pygame.sprite.Group()
+menu_buttons_group = pygame.sprite.Group()
+active_bookmark = 0 #Gdy klikniesz na zakładkę pierwszą to active_bookmark = 1 itp.
 
 #kolory
 canvas_color = [130, 192, 204]
@@ -65,6 +67,7 @@ class BookmarkButtons(pygame.sprite.Sprite):
         pygame.draw.rect(screen, self.colors, (self.x, self.y, self.width, self.height))
 
 
+#funkcja wywoływana w pętli
 def display_window():
     screen.blit(canvas, (canvas_pos, 0))
     #screen.blit(bookmarks, (245, 0))
@@ -72,7 +75,10 @@ def display_window():
 
     bookmarks_buttons.update()
     bookmarks_buttons.draw(screen)
-
+    #Gdy włączysz zakładkę "MENU" pojawiają się przyciski
+    if active_bookmark == 5:
+        menu_buttons_group.update()
+        menu_buttons_group.draw(screen)
     pygame.display.update()
 
 
@@ -82,6 +88,35 @@ walls_button = BookmarkButtons((bookmark_x, bookmark_height*2), 'Ściany', walls
 misc_button = BookmarkButtons((bookmark_x, bookmark_height*3), 'Różne', misc_color)
 menu_button = BookmarkButtons((bookmark_x, bookmark_height*4), 'Menu', menu_color)
 
+#------TOOLBOX MENU BUTTONS-----
+
+
+class MenuButtons(pygame.sprite.Sprite):
+    def __init__(self, picture_path, position):
+        super().__init__()
+        self.image = pygame.image.load(picture_path)
+        self.x, self.y = position
+        self.rect = self.image.get_rect()
+        self.rect.center = position
+
+
+
+
+
+#------MENU BUTTONS-----
+'''
+zapis do pliku
+przycisk do zmiany rozmiaru mapy
+przycisk do obracania
+przycisk do usuwania
+'''
+menu_save_button = MenuButtons("Pictures/Menu/menu_save_button.jpg", [122.5, 70])
+menu_buttons_group.add(menu_save_button)
+
+
+
+#------END MENU BUTTONS-----
+
 
 while True:
 
@@ -90,16 +125,25 @@ while True:
             pygame.quit()
             exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
+            #sprawdzanie zakładek
             if environment_button.rect.collidepoint(pygame.mouse.get_pos()):
+                active_bookmark = 1
                 toolbox.fill(color=environment_color)
             elif furniture_button.rect.collidepoint(pygame.mouse.get_pos()):
+                active_bookmark = 2
                 toolbox.fill(color=furniture_color)
             elif walls_button.rect.collidepoint(pygame.mouse.get_pos()):
+                active_bookmark = 3
                 toolbox.fill(color=walls_color)
             elif misc_button.rect.collidepoint(pygame.mouse.get_pos()):
+                active_bookmark = 4
                 toolbox.fill(color=misc_color)
             elif menu_button.rect.collidepoint(pygame.mouse.get_pos()):
+                active_bookmark = 5
                 toolbox.fill(color=menu_color)
+            #sprawdzanie przycisków w zakładkach
+            elif active_bookmark == 5 and menu_save_button.rect.collidepoint(pygame.mouse.get_pos()):
+                print("saved")
 
     # rozmieszczenie poszczegolnych przestrzeni roboczych
     # kazda pozycja przestrzeni to lewy, gorny rog
