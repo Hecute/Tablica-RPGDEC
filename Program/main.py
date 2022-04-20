@@ -17,7 +17,11 @@ pygame.font.init()
 screen = pygame.display.set_mode((1000,720))
 bookmarks_buttons = pygame.sprite.Group()
 menu_buttons_group = pygame.sprite.Group()
+biom_buttons_group = pygame.sprite.Group()
+map_elements = pygame.sprite.Group()
+
 active_bookmark = 0 #Gdy klikniesz na zakładkę pierwszą to active_bookmark = 1 itp.
+active_biom = 0
 
 #kolory
 canvas_color = [130, 192, 204]
@@ -39,6 +43,8 @@ bookmarks.fill(color=bookmarks_color)
 toolbox = pygame.Surface((245, 720))
 toolbox.fill(color=toolbox_color)
 canvas_pos = toolbox.get_width() + bookmarks.get_width()
+big_biom_pos = (canvas_pos + 80, 80)
+medium_biom_pos = (canvas_pos + 320, 320)
 
 # Wymiary i położenie przycisków paska zakładek
 bookmarks_number = 5
@@ -69,14 +75,17 @@ class BookmarkButtons(pygame.sprite.Sprite):
 
 #funkcja wywoływana w pętli
 def display_window():
-    screen.blit(canvas, (canvas_pos, 0))
+    # screen.blit(canvas, (canvas_pos, 0))
     #screen.blit(bookmarks, (245, 0))
     screen.blit(toolbox, (0, 0))
 
     bookmarks_buttons.update()
     bookmarks_buttons.draw(screen)
     #Gdy włączysz zakładkę "MENU" pojawiają się przyciski
-    if active_bookmark == 5:
+    if active_bookmark == 1:
+        biom_buttons_group.update()
+        biom_buttons_group.draw(screen)
+    elif active_bookmark == 5:
         menu_buttons_group.update()
         menu_buttons_group.draw(screen)
     pygame.display.update()
@@ -112,11 +121,29 @@ przycisk do usuwania
 '''
 menu_save_button = MenuButtons("Pictures/Menu/menu_save_button.jpg", [122.5, 70])
 menu_buttons_group.add(menu_save_button)
-
-
-
 #------END MENU BUTTONS-----
 
+#-----BIOM BUTTONS-----
+class BiomButtons(pygame.sprite.Sprite):
+    def __init__(self, picture_path, position):
+        super().__init__()
+        self.image = pygame.image.load(picture_path)
+        self.full_image = self.image
+        self.image = pygame.transform.scale(self.image, (75,75))
+        self.x, self.y = position
+        self.rect = self.image.get_rect()
+        self.rect.center = position
+
+    def draw_terrain(self, position):
+        screen.blit(self.full_image, position)
+
+
+# biom_grass_big = BiomButtons("Pictures/Bioms/grass_big.png", [70, 70])
+# biom_buttons_group.add((biom_grass_big))
+# biom_grass_medium = BiomButtons("Pictures/Bioms/grass_medium.png", [175, 70])
+# biom_buttons_group.add(biom_grass_medium)
+
+screen.blit(canvas, (canvas_pos, 0))
 
 while True:
 
@@ -142,9 +169,23 @@ while True:
                 active_bookmark = 5
                 toolbox.fill(color=menu_color)
             #sprawdzanie przycisków w zakładkach
+            elif active_bookmark == 1:
+                # if biom_grass_big.rect.collidepoint(pygame.mouse.get_pos()):
+                #     screen.blit(canvas, (canvas_pos, 0))
+                #     biom_grass_big.draw_terrain(big_biom_pos)
+                # elif biom_grass_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                #     screen.blit(canvas, (canvas_pos, 0))
+                #     biom_grass_medium.draw_terrain(medium_biom_pos)
+
+                map_elements.update()
+                map_elements.draw(screen)
             elif active_bookmark == 5 and menu_save_button.rect.collidepoint(pygame.mouse.get_pos()):
                 print("saved")
 
     # rozmieszczenie poszczegolnych przestrzeni roboczych
     # kazda pozycja przestrzeni to lewy, gorny rog
     display_window()
+    # if active_bookmark == 1:
+    #     if biom_grass_big.rect.collidepoint(pygame.mouse.get_pos()):
+    #         # biom_grass_big.draw_terrain((canvas_pos,80))
+    #         screen.blit(biom_grass_big.image, (canvas_pos + 80, 80))
