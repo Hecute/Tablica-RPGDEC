@@ -18,6 +18,7 @@ screen = pygame.display.set_mode((1000,720))
 bookmarks_buttons = pygame.sprite.Group()
 menu_buttons_group = pygame.sprite.Group()
 biome_buttons_group = pygame.sprite.Group()
+terrain = pygame.sprite.Group()
 map_elements = pygame.sprite.Group()
 
 active_bookmark = 0 #Gdy klikniesz na zakładkę pierwszą to active_bookmark = 1 itp.
@@ -43,6 +44,7 @@ bookmarks.fill(color=bookmarks_color)
 toolbox = pygame.Surface((245, 720))
 toolbox.fill(color=toolbox_color)
 canvas_pos = toolbox.get_width() + bookmarks.get_width()
+canvas_center = (640, 360)
 big_biome_pos = (canvas_pos + 80, 80)
 medium_biome_pos = (canvas_pos + 320, 320)
 
@@ -73,22 +75,7 @@ class BookmarkButtons(pygame.sprite.Sprite):
         pygame.draw.rect(screen, self.colors, (self.x, self.y, self.width, self.height))
 
 
-#funkcja wywoływana w pętli
-def display_window():
-    # screen.blit(canvas, (canvas_pos, 0))
-    #screen.blit(bookmarks, (245, 0))
-    screen.blit(toolbox, (0, 0))
 
-    bookmarks_buttons.update()
-    bookmarks_buttons.draw(screen)
-    #Gdy włączysz zakładkę "MENU" pojawiają się przyciski
-    if active_bookmark == 1:
-        biome_buttons_group.update()
-        biome_buttons_group.draw(screen)
-    elif active_bookmark == 5:
-        menu_buttons_group.update()
-        menu_buttons_group.draw(screen)
-    pygame.display.update()
 
 
 environment_button = BookmarkButtons((bookmark_x, 0), 'Biom', environment_color)
@@ -128,19 +115,16 @@ class BiomeButtons(pygame.sprite.Sprite):
     def __init__(self, picture_path, position):
         super().__init__()
         self.image = pygame.image.load(picture_path)
-        self.full_image = self.image
         self.image = pygame.transform.scale(self.image, (75,75))
         self.x, self.y = position
         self.rect = self.image.get_rect()
         self.rect.center = position
 
-    def draw_terrain(self, position):
-        screen.blit(self.full_image, position)
 
 
 # biome_grass_big = BiomeButtons("Pictures/Biomes/grass_big.png", [70, 70])
 # biome_buttons_group.add(biome_grass_big)
-# biome_grass_medium = BiomeButtons("Pictures/Biomes/grass_medium.png", [175, 70])
+# biome_grass_medium = BiomeButtons("Pictures/Biomes/grass_middle.png", [175, 70])
 # biome_buttons_group.add(biome_grass_medium)
 #
 # biome_cave_big = BiomeButtons("Pictures/Biomes/cave_big.png", [70, 170])
@@ -165,6 +149,41 @@ class BiomeButtons(pygame.sprite.Sprite):
 
 
 #-----END BIOME BUTTONS-----
+
+class MapElement(pygame.sprite.Sprite):
+    def __init__(self, picture_path, position):
+        super().__init__()
+        self.image = pygame.image.load(picture_path)
+        self.x, self.y = position
+        self.rect = self.image.get_rect()
+        self.rect.center = position
+
+    def draw_element(self, position):
+        screen.blit(self.image, position)
+
+#funkcja wywoływana w pętli
+def display_window():
+    screen.blit(canvas, (canvas_pos, 0))
+    #screen.blit(bookmarks, (245, 0))
+    screen.blit(toolbox, (0, 0))
+
+    bookmarks_buttons.update()
+    bookmarks_buttons.draw(screen)
+    #Gdy włączysz zakładkę "MENU" pojawiają się przyciski
+    if active_bookmark == 1:
+        biome_buttons_group.update()
+        biome_buttons_group.draw(screen)
+    elif active_bookmark == 5:
+        menu_buttons_group.update()
+        menu_buttons_group.draw(screen)
+
+    terrain.update()
+    terrain.draw(screen)
+    map_elements.update()
+    map_elements.draw(screen)
+
+    pygame.display.update()
+
 
 screen.blit(canvas, (canvas_pos, 0))
 
@@ -192,52 +211,45 @@ while True:
                 active_bookmark = 5
                 toolbox.fill(color=menu_color)
             #sprawdzanie przycisków w zakładkach
-            elif active_bookmark == 1:
+            # elif active_bookmark == 1:
                 # if biome_grass_big.rect.collidepoint(pygame.mouse.get_pos()):
-                #     screen.blit(canvas, (canvas_pos, 0))
-                #     biome_grass_big.draw_terrain(big_biome_pos)
+                #     terrain.empty()
+                #     terrain.add(MapElement("Pictures/Biomes/grass_big.png", canvas_center))
                 # elif biome_grass_medium.rect.collidepoint(pygame.mouse.get_pos()):
-                #     screen.blit(canvas, (canvas_pos, 0))
-                #     biome_grass_medium.draw_terrain(medium_biome_pos)
-                #
+                #     terrain.empty()
+                #     terrain.add(MapElement("Pictures/Biomes/grass_medium.png", canvas_center))
                 # elif biome_cave_big.rect.collidepoint(pygame.mouse.get_pos()):
-                #     screen.blit(canvas, (canvas_pos, 0))
-                #     biome_cave_big.draw_terrain(big_biome_pos)
+                #   terrain.empty()
+                #   terrain.add(MapElement("Pictures/Biomes/cave_big.png", canvas_center))
                 # elif biome_cave_medium.rect.collidepoint(pygame.mouse.get_pos()):
-                #     screen.blit(canvas, (canvas_pos, 0))
-                #     biome_cave_medium.draw_terrain(medium_biome_pos)
+                #     terrain.empty()
+                #     terrain.add(MapElement("Pictures/Biomes/cave_medium.png", canvas_center))
                 #
                 # elif biome_city_big.rect.collidepoint(pygame.mouse.get_pos()):
-                #     screen.blit(canvas, (canvas_pos, 0))
-                #     biome_city_big.draw_terrain(big_biome_pos)
+                #     terrain.empty()
+                #     terrain.add(MapElement("Pictures/Biomes/city_big.png", canvas_center))
                 # elif biome_city_medium.rect.collidepoint(pygame.mouse.get_pos()):
-                #     screen.blit(canvas, (canvas_pos, 0))
-                #     biome_city_medium.draw_terrain(medium_biome_pos)
+                #     terrain.empty()
+                #     terrain.add(MapElement("Pictures/Biomes/city_medium.png", canvas_center))
                 #
                 # elif biome_water_big.rect.collidepoint(pygame.mouse.get_pos()):
-                #     screen.blit(canvas, (canvas_pos, 0))
-                #     biome_water_big.draw_terrain(big_biome_pos)
+                #     terrain.empty()
+                #     terrain.add(MapElement("Pictures/Biomes/water_big.png", canvas_center))
                 # elif biome_water_medium.rect.collidepoint(pygame.mouse.get_pos()):
-                #     screen.blit(canvas, (canvas_pos, 0))
-                #     biome_water_medium.draw_terrain(medium_biome_pos)
+                #     terrain.empty()
+                #     terrain.add(MapElement("Pictures/Biomes/water_medium.png", canvas_center))
                 #
                 # elif biome_sand_big.rect.collidepoint(pygame.mouse.get_pos()):
-                #     screen.blit(canvas, (canvas_pos, 0))
-                #     biome_sand_big.draw_terrain(big_biome_pos)
+                #     terrain.empty()
+                #     terrain.add(MapElement("Pictures/Biomes/sand_big.png", canvas_center))
                 # elif biome_sand_medium.rect.collidepoint(pygame.mouse.get_pos()):
-                #     screen.blit(canvas, (canvas_pos, 0))
-                #     biome_sand_medium.draw_terrain(medium_biome_pos)
+                #     terrain.empty()
+                #     terrain.add(MapElement("Pictures/Biomes/sand_medium.png", canvas_center))
 
-
-                map_elements.update()
-                map_elements.draw(screen)
             elif active_bookmark == 5 and menu_save_button.rect.collidepoint(pygame.mouse.get_pos()):
                 print("saved")
 
     # rozmieszczenie poszczegolnych przestrzeni roboczych
     # kazda pozycja przestrzeni to lewy, gorny rog
     display_window()
-    # if active_bookmark == 1:
-    #     if biom_grass_big.rect.collidepoint(pygame.mouse.get_pos()):
-    #         # biom_grass_big.draw_terrain((canvas_pos,80))
-    #         screen.blit(biom_grass_big.image, (canvas_pos + 80, 80))
+
