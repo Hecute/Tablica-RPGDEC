@@ -143,24 +143,24 @@ class BiomeButtons(pygame.sprite.Sprite):
 # biome_grass_medium = BiomeButtons("Pictures/Biomes/grass_medium.png", [175, 70])
 # biome_buttons_group.add(biome_grass_medium)
 #
-# biome_cave_big = BiomeButtons("Pictures/Biomes/cave_big.png", [70, 70])
+# biome_cave_big = BiomeButtons("Pictures/Biomes/cave_big.png", [70, 170])
 # biome_buttons_group.add(biome_cave_big)
-# biome_cave_medium = BiomeButtons("Pictures/Biomes/cave_medium.png", [175, 70])
+# biome_cave_medium = BiomeButtons("Pictures/Biomes/cave_medium.png", [175, 170])
 # biome_buttons_group.add(biome_cave_medium)
 #
-# biome_city_big = BiomeButtons("Pictures/Biomes/city_big.png", [70, 70])
+# biome_city_big = BiomeButtons("Pictures/Biomes/city_big.png", [70, 270])
 # biome_buttons_group.add(biome_city_big)
-# biome_city_medium = BiomeButtons("Pictures/Biomes/city_medium.png", [175, 70])
+# biome_city_medium = BiomeButtons("Pictures/Biomes/city_medium.png", [175, 270])
 # biome_buttons_group.add(biome_city_medium)
 #
-# biome_water_big = BiomeButtons("Pictures/Biomes/water_big.png", [70, 70])
+# biome_water_big = BiomeButtons("Pictures/Biomes/water_big.png", [70, 370])
 # biome_buttons_group.add(biome_water_big)
-# biome_water_medium = BiomeButtons("Pictures/Biomes/water_medium.png", [175, 70])
+# biome_water_medium = BiomeButtons("Pictures/Biomes/water_medium.png", [175, 370])
 # biome_buttons_group.add(biome_water_medium)
 #
-# biome_sand_big = BiomeButtons("Pictures/Biomes/sand_big.png", [70, 70])
+# biome_sand_big = BiomeButtons("Pictures/Biomes/sand_big.png", [70, 470])
 # biome_buttons_group.add(biome_sand_big)
-# biome_sand_medium = BiomeButtons("Pictures/Biomes/sand_medium.png", [175, 70])
+# biome_sand_medium = BiomeButtons("Pictures/Biomes/sand_medium.png", [175, 470])
 # biome_buttons_group.add(biome_sand_medium)
 
 
