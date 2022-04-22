@@ -17,11 +17,11 @@ pygame.font.init()
 screen = pygame.display.set_mode((1000,720))
 bookmarks_buttons = pygame.sprite.Group()
 menu_buttons_group = pygame.sprite.Group()
-biom_buttons_group = pygame.sprite.Group()
+biome_buttons_group = pygame.sprite.Group()
 map_elements = pygame.sprite.Group()
 
 active_bookmark = 0 #Gdy klikniesz na zakładkę pierwszą to active_bookmark = 1 itp.
-active_biom = 0
+active_biome = 0
 
 #kolory
 canvas_color = [130, 192, 204]
@@ -43,8 +43,8 @@ bookmarks.fill(color=bookmarks_color)
 toolbox = pygame.Surface((245, 720))
 toolbox.fill(color=toolbox_color)
 canvas_pos = toolbox.get_width() + bookmarks.get_width()
-big_biom_pos = (canvas_pos + 80, 80)
-medium_biom_pos = (canvas_pos + 320, 320)
+big_biome_pos = (canvas_pos + 80, 80)
+medium_biome_pos = (canvas_pos + 320, 320)
 
 # Wymiary i położenie przycisków paska zakładek
 bookmarks_number = 5
@@ -83,8 +83,8 @@ def display_window():
     bookmarks_buttons.draw(screen)
     #Gdy włączysz zakładkę "MENU" pojawiają się przyciski
     if active_bookmark == 1:
-        biom_buttons_group.update()
-        biom_buttons_group.draw(screen)
+        biome_buttons_group.update()
+        biome_buttons_group.draw(screen)
     elif active_bookmark == 5:
         menu_buttons_group.update()
         menu_buttons_group.draw(screen)
@@ -123,8 +123,8 @@ menu_save_button = MenuButtons("Pictures/Menu/menu_save_button.jpg", [122.5, 70]
 menu_buttons_group.add(menu_save_button)
 #------END MENU BUTTONS-----
 
-#-----BIOM BUTTONS-----
-class BiomButtons(pygame.sprite.Sprite):
+#-----BIOME BUTTONS-----
+class BiomeButtons(pygame.sprite.Sprite):
     def __init__(self, picture_path, position):
         super().__init__()
         self.image = pygame.image.load(picture_path)
@@ -138,10 +138,33 @@ class BiomButtons(pygame.sprite.Sprite):
         screen.blit(self.full_image, position)
 
 
-# biom_grass_big = BiomButtons("Pictures/Bioms/grass_big.png", [70, 70])
-# biom_buttons_group.add((biom_grass_big))
-# biom_grass_medium = BiomButtons("Pictures/Bioms/grass_medium.png", [175, 70])
-# biom_buttons_group.add(biom_grass_medium)
+# biome_grass_big = BiomeButtons("Pictures/Biomes/grass_big.png", [70, 70])
+# biome_buttons_group.add(biome_grass_big)
+# biome_grass_medium = BiomeButtons("Pictures/Biomes/grass_medium.png", [175, 70])
+# biome_buttons_group.add(biome_grass_medium)
+#
+# biome_cave_big = BiomeButtons("Pictures/Biomes/cave_big.png", [70, 70])
+# biome_buttons_group.add(biome_cave_big)
+# biome_cave_medium = BiomeButtons("Pictures/Biomes/cave_medium.png", [175, 70])
+# biome_buttons_group.add(biome_cave_medium)
+#
+# biome_city_big = BiomeButtons("Pictures/Biomes/city_big.png", [70, 70])
+# biome_buttons_group.add(biome_city_big)
+# biome_city_medium = BiomeButtons("Pictures/Biomes/city_medium.png", [175, 70])
+# biome_buttons_group.add(biome_city_medium)
+#
+# biome_water_big = BiomeButtons("Pictures/Biomes/water_big.png", [70, 70])
+# biome_buttons_group.add(biome_water_big)
+# biome_water_medium = BiomeButtons("Pictures/Biomes/water_medium.png", [175, 70])
+# biome_buttons_group.add(biome_water_medium)
+#
+# biome_sand_big = BiomeButtons("Pictures/Biomes/sand_big.png", [70, 70])
+# biome_buttons_group.add(biome_sand_big)
+# biome_sand_medium = BiomeButtons("Pictures/Biomes/sand_medium.png", [175, 70])
+# biome_buttons_group.add(biome_sand_medium)
+
+
+#-----END BIOME BUTTONS-----
 
 screen.blit(canvas, (canvas_pos, 0))
 
@@ -170,12 +193,41 @@ while True:
                 toolbox.fill(color=menu_color)
             #sprawdzanie przycisków w zakładkach
             elif active_bookmark == 1:
-                # if biom_grass_big.rect.collidepoint(pygame.mouse.get_pos()):
+                # if biome_grass_big.rect.collidepoint(pygame.mouse.get_pos()):
                 #     screen.blit(canvas, (canvas_pos, 0))
-                #     biom_grass_big.draw_terrain(big_biom_pos)
-                # elif biom_grass_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                #     biome_grass_big.draw_terrain(big_biome_pos)
+                # elif biome_grass_medium.rect.collidepoint(pygame.mouse.get_pos()):
                 #     screen.blit(canvas, (canvas_pos, 0))
-                #     biom_grass_medium.draw_terrain(medium_biom_pos)
+                #     biome_grass_medium.draw_terrain(medium_biome_pos)
+                #
+                # elif biome_cave_big.rect.collidepoint(pygame.mouse.get_pos()):
+                #     screen.blit(canvas, (canvas_pos, 0))
+                #     biome_cave_big.draw_terrain(big_biome_pos)
+                # elif biome_cave_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                #     screen.blit(canvas, (canvas_pos, 0))
+                #     biome_cave_medium.draw_terrain(medium_biome_pos)
+                #
+                # elif biome_city_big.rect.collidepoint(pygame.mouse.get_pos()):
+                #     screen.blit(canvas, (canvas_pos, 0))
+                #     biome_city_big.draw_terrain(big_biome_pos)
+                # elif biome_city_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                #     screen.blit(canvas, (canvas_pos, 0))
+                #     biome_city_medium.draw_terrain(medium_biome_pos)
+                #
+                # elif biome_water_big.rect.collidepoint(pygame.mouse.get_pos()):
+                #     screen.blit(canvas, (canvas_pos, 0))
+                #     biome_water_big.draw_terrain(big_biome_pos)
+                # elif biome_water_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                #     screen.blit(canvas, (canvas_pos, 0))
+                #     biome_water_medium.draw_terrain(medium_biome_pos)
+                #
+                # elif biome_sand_big.rect.collidepoint(pygame.mouse.get_pos()):
+                #     screen.blit(canvas, (canvas_pos, 0))
+                #     biome_sand_big.draw_terrain(big_biome_pos)
+                # elif biome_sand_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                #     screen.blit(canvas, (canvas_pos, 0))
+                #     biome_sand_medium.draw_terrain(medium_biome_pos)
+
 
                 map_elements.update()
                 map_elements.draw(screen)
