@@ -59,15 +59,15 @@ class BookmarkButtons(pygame.sprite.Sprite):
         super().__init__()
         self.colors = colors
         self.font = pygame.font.SysFont("Arial", 30)
-        self.text_render = self.font.render(text, True, (0, 0, 0))
-        self.text_render = pygame.transform.rotate(self.text_render, 270)
-        # zamienić Surface na image.load
+        self.textSurf = self.font.render(text, 1, "WHITE")
+        self.textSurf = pygame.transform.rotate(self.textSurf,270)
         self.image = pygame.Surface([bookmark_width,bookmark_height])
         self.image.fill(self.colors)
         self.x, self.y = position
         self.width = bookmark_width
         self.height = bookmark_height
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.image.blit(self.textSurf,[bookmark_width/2 - self.width/2, bookmark_height/2 - self.height/2])
         self.update()
         bookmarks_buttons.add(self)
 
@@ -102,12 +102,12 @@ class MenuButtons(pygame.sprite.Sprite):
 #------MENU BUTTONS-----
 '''
 zapis do pliku
-przycisk do zmiany rozmiaru mapy
-przycisk do obracania
-przycisk do usuwania
+czyszczenie mapy
 '''
 menu_save_button = MenuButtons("Pictures/Menu/menu_save_button.jpg", [122.5, 70])
 menu_buttons_group.add(menu_save_button)
+menu_delete_button = MenuButtons("Pictures/Menu/menu_delete_button.png", [122.5, 180])
+menu_buttons_group.add(menu_delete_button)
 #------END MENU BUTTONS-----
 
 #-----BIOME BUTTONS-----
@@ -122,30 +122,30 @@ class BiomeButtons(pygame.sprite.Sprite):
 
 
 
-# biome_grass_big = BiomeButtons("Pictures/Biomes/grass_big.png", [70, 70])
-# biome_buttons_group.add(biome_grass_big)
-# biome_grass_medium = BiomeButtons("Pictures/Biomes/grass_middle.png", [175, 70])
-# biome_buttons_group.add(biome_grass_medium)
-#
-# biome_cave_big = BiomeButtons("Pictures/Biomes/cave_big.png", [70, 170])
-# biome_buttons_group.add(biome_cave_big)
-# biome_cave_medium = BiomeButtons("Pictures/Biomes/cave_medium.png", [175, 170])
-# biome_buttons_group.add(biome_cave_medium)
-#
-# biome_city_big = BiomeButtons("Pictures/Biomes/city_big.png", [70, 270])
-# biome_buttons_group.add(biome_city_big)
-# biome_city_medium = BiomeButtons("Pictures/Biomes/city_medium.png", [175, 270])
-# biome_buttons_group.add(biome_city_medium)
-#
-# biome_water_big = BiomeButtons("Pictures/Biomes/water_big.png", [70, 370])
-# biome_buttons_group.add(biome_water_big)
-# biome_water_medium = BiomeButtons("Pictures/Biomes/water_medium.png", [175, 370])
-# biome_buttons_group.add(biome_water_medium)
-#
-# biome_sand_big = BiomeButtons("Pictures/Biomes/sand_big.png", [70, 470])
-# biome_buttons_group.add(biome_sand_big)
-# biome_sand_medium = BiomeButtons("Pictures/Biomes/sand_medium.png", [175, 470])
-# biome_buttons_group.add(biome_sand_medium)
+biome_grass_big = BiomeButtons("Pictures/Biomes/grass_big.png", [70, 70])
+biome_buttons_group.add(biome_grass_big)
+biome_grass_medium = BiomeButtons("Pictures/Biomes/grass_medium.png", [175, 70])
+biome_buttons_group.add(biome_grass_medium)
+
+biome_cave_big = BiomeButtons("Pictures/Biomes/cave_big.png", [70, 170])
+biome_buttons_group.add(biome_cave_big)
+biome_cave_medium = BiomeButtons("Pictures/Biomes/cave_medium.png", [175, 170])
+biome_buttons_group.add(biome_cave_medium)
+
+biome_city_big = BiomeButtons("Pictures/Biomes/city_big.png", [70, 270])
+biome_buttons_group.add(biome_city_big)
+biome_city_medium = BiomeButtons("Pictures/Biomes/city_medium.png", [175, 270])
+biome_buttons_group.add(biome_city_medium)
+
+biome_water_big = BiomeButtons("Pictures/Biomes/water_big.png", [70, 370])
+biome_buttons_group.add(biome_water_big)
+biome_water_medium = BiomeButtons("Pictures/Biomes/water_medium.png", [175, 370])
+biome_buttons_group.add(biome_water_medium)
+
+biome_sand_big = BiomeButtons("Pictures/Biomes/sand_big.png", [70, 470])
+biome_buttons_group.add(biome_sand_big)
+biome_sand_medium = BiomeButtons("Pictures/Biomes/sand_medium.png", [175, 470])
+biome_buttons_group.add(biome_sand_medium)
 
 
 #-----END BIOME BUTTONS-----
@@ -211,45 +211,52 @@ while True:
                 active_bookmark = 5
                 toolbox.fill(color=menu_color)
             #sprawdzanie przycisków w zakładkach
-            # elif active_bookmark == 1:
-                # if biome_grass_big.rect.collidepoint(pygame.mouse.get_pos()):
-                #     terrain.empty()
-                #     terrain.add(MapElement("Pictures/Biomes/grass_big.png", canvas_center))
-                # elif biome_grass_medium.rect.collidepoint(pygame.mouse.get_pos()):
-                #     terrain.empty()
-                #     terrain.add(MapElement("Pictures/Biomes/grass_medium.png", canvas_center))
-                # elif biome_cave_big.rect.collidepoint(pygame.mouse.get_pos()):
-                #   terrain.empty()
-                #   terrain.add(MapElement("Pictures/Biomes/cave_big.png", canvas_center))
-                # elif biome_cave_medium.rect.collidepoint(pygame.mouse.get_pos()):
-                #     terrain.empty()
-                #     terrain.add(MapElement("Pictures/Biomes/cave_medium.png", canvas_center))
-                #
-                # elif biome_city_big.rect.collidepoint(pygame.mouse.get_pos()):
-                #     terrain.empty()
-                #     terrain.add(MapElement("Pictures/Biomes/city_big.png", canvas_center))
-                # elif biome_city_medium.rect.collidepoint(pygame.mouse.get_pos()):
-                #     terrain.empty()
-                #     terrain.add(MapElement("Pictures/Biomes/city_medium.png", canvas_center))
-                #
-                # elif biome_water_big.rect.collidepoint(pygame.mouse.get_pos()):
-                #     terrain.empty()
-                #     terrain.add(MapElement("Pictures/Biomes/water_big.png", canvas_center))
-                # elif biome_water_medium.rect.collidepoint(pygame.mouse.get_pos()):
-                #     terrain.empty()
-                #     terrain.add(MapElement("Pictures/Biomes/water_medium.png", canvas_center))
-                #
-                # elif biome_sand_big.rect.collidepoint(pygame.mouse.get_pos()):
-                #     terrain.empty()
-                #     terrain.add(MapElement("Pictures/Biomes/sand_big.png", canvas_center))
-                # elif biome_sand_medium.rect.collidepoint(pygame.mouse.get_pos()):
-                #     terrain.empty()
-                #     terrain.add(MapElement("Pictures/Biomes/sand_medium.png", canvas_center))
+            elif active_bookmark == 1:
+                if biome_grass_big.rect.collidepoint(pygame.mouse.get_pos()):
+                    terrain.empty()
+                    terrain.add(MapElement("Pictures/Biomes/grass_big.png", canvas_center))
+                elif biome_grass_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                    terrain.empty()
+                    terrain.add(MapElement("Pictures/Biomes/grass_medium.png", canvas_center))
+                elif biome_cave_big.rect.collidepoint(pygame.mouse.get_pos()):
+                  terrain.empty()
+                  terrain.add(MapElement("Pictures/Biomes/cave_big.png", canvas_center))
+                elif biome_cave_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                    terrain.empty()
+                    terrain.add(MapElement("Pictures/Biomes/cave_medium.png", canvas_center))
+
+                elif biome_city_big.rect.collidepoint(pygame.mouse.get_pos()):
+                    terrain.empty()
+                    terrain.add(MapElement("Pictures/Biomes/city_big.png", canvas_center))
+                elif biome_city_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                    terrain.empty()
+                    terrain.add(MapElement("Pictures/Biomes/city_medium.png", canvas_center))
+
+                elif biome_water_big.rect.collidepoint(pygame.mouse.get_pos()):
+                    terrain.empty()
+                    terrain.add(MapElement("Pictures/Biomes/water_big.png", canvas_center))
+                elif biome_water_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                    terrain.empty()
+                    terrain.add(MapElement("Pictures/Biomes/water_medium.png", canvas_center))
+
+                elif biome_sand_big.rect.collidepoint(pygame.mouse.get_pos()):
+                    terrain.empty()
+                    terrain.add(MapElement("Pictures/Biomes/sand_big.png", canvas_center))
+                elif biome_sand_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                    terrain.empty()
+                    terrain.add(MapElement("Pictures/Biomes/sand_medium.png", canvas_center))
 
             elif active_bookmark == 5 and menu_save_button.rect.collidepoint(pygame.mouse.get_pos()):
                 print("saved")
+                rect = pygame.Rect(280,0,720,720)
+                screenshot = screen.subsurface(rect)
+                pygame.image.save(screenshot,"map_save.png")
+
+            elif active_bookmark == 5 and menu_delete_button.rect.collidepoint(pygame.mouse.get_pos()):
+                print("deleted")
+                map_elements.empty()
+                terrain.empty()
 
     # rozmieszczenie poszczegolnych przestrzeni roboczych
     # kazda pozycja przestrzeni to lewy, gorny rog
     display_window()
-
