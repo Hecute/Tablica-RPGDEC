@@ -1,5 +1,7 @@
 import pygame
 from sys import exit
+import tkinter as tk
+from tkinter import filedialog
 #Przydatne strony:
 #https://www.youtube.com/watch?v=AY9MnQ4x3zk&t=6357s (tutorial)
 #https://coolors.co (gotowe palety barw, kreator palet)
@@ -247,10 +249,14 @@ while True:
                     terrain.add(MapElement("Pictures/Biomes/sand_medium.png", canvas_center))
 
             elif active_bookmark == 5 and menu_save_button.rect.collidepoint(pygame.mouse.get_pos()):
+                root = tk.Tk()
+                root.withdraw()
+                path = filedialog.asksaveasfilename(initialdir = "/",title = "Select file",filetypes = (("png files","*.png"),("All","*.*")),defaultextension = ".png")
+                print(path)
                 print("saved")
                 rect = pygame.Rect(280,0,720,720)
                 screenshot = screen.subsurface(rect)
-                pygame.image.save(screenshot,"map_save.png")
+                pygame.image.save(screenshot,path)
 
             elif active_bookmark == 5 and menu_delete_button.rect.collidepoint(pygame.mouse.get_pos()):
                 print("deleted")
