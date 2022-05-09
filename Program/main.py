@@ -197,10 +197,10 @@ while True:
             #sprawdzanie zakładek
             if environment_button.rect.collidepoint(pygame.mouse.get_pos()):
                 active_bookmark = 1
-                toolbox.fill(color=environment_color)
+                toolbox = pygame.image.load("Pictures/ToolBoxes/Biome_ToolBox.png")
             elif furniture_button.rect.collidepoint(pygame.mouse.get_pos()):
                 active_bookmark = 2
-                toolbox.fill(color=furniture_color)
+                toolbox = pygame.image.load("Pictures/ToolBoxes/Furniture_ToolBox.png")
             elif walls_button.rect.collidepoint(pygame.mouse.get_pos()):
                 active_bookmark = 3
                 toolbox.fill(color=walls_color)
