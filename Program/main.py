@@ -20,11 +20,13 @@ screen = pygame.display.set_mode((1000,720))
 bookmarks_buttons = pygame.sprite.Group()
 menu_buttons_group = pygame.sprite.Group()
 biome_buttons_group = pygame.sprite.Group()
+furniture_buttons_group = pygame.sprite.Group()
 terrain = pygame.sprite.Group()
 map_elements = pygame.sprite.Group()
 
 active_bookmark = 0 #Gdy klikniesz na zakładkę pierwszą to active_bookmark = 1 itp.
 active_biome = 0
+tool_selected = 0
 
 #kolory
 canvas_color = [130, 192, 204]
@@ -152,16 +154,24 @@ biome_buttons_group.add(biome_sand_medium)
 
 #-----END BIOME BUTTONS-----
 
+#-----MAP ELEMENTS-----
 class MapElement(pygame.sprite.Sprite):
     def __init__(self, picture_path, position):
         super().__init__()
         self.image = pygame.image.load(picture_path)
+        self.cursor = picture_path
         self.x, self.y = position
         self.rect = self.image.get_rect()
         self.rect.center = position
 
     def draw_element(self, position):
         screen.blit(self.image, position)
+
+
+size_test = MapElement("Pictures/Furniture/cursor.png", [70, 600])
+furniture_buttons_group.add(size_test)
+
+
 
 #funkcja wywoływana w pętli
 def display_window():
@@ -175,6 +185,9 @@ def display_window():
     if active_bookmark == 1:
         biome_buttons_group.update()
         biome_buttons_group.draw(screen)
+    elif active_bookmark == 2:
+        furniture_buttons_group.update()
+        furniture_buttons_group.draw(screen)
     elif active_bookmark == 5:
         menu_buttons_group.update()
         menu_buttons_group.draw(screen)
@@ -184,10 +197,22 @@ def display_window():
     map_elements.update()
     map_elements.draw(screen)
 
+    if pygame.mouse.get_pos() >= (canvas_pos, 0) and pygame.mouse.get_pos() <= (1000, 720) and tool_selected == 1:
+        pygame.mouse.set_visible(False)
+        cords = pygame.mouse.get_pos()
+        cursor_rect = cursor.get_rect()
+        cursor_rect.center = cords
+        screen.blit(cursor, cursor_rect)
+    else:
+        pygame.mouse.set_visible(True)
     pygame.display.update()
 
 
+
+
+
 screen.blit(canvas, (canvas_pos, 0))
+cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
 while True:
 
@@ -195,22 +220,35 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+
+
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             #sprawdzanie zakładek
             if environment_button.rect.collidepoint(pygame.mouse.get_pos()):
                 active_bookmark = 1
+                cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                tool_selected = 0
                 toolbox = pygame.image.load("Pictures/ToolBoxes/Biome_ToolBox.png")
             elif furniture_button.rect.collidepoint(pygame.mouse.get_pos()):
                 active_bookmark = 2
+                cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                tool_selected = 0
                 toolbox = pygame.image.load("Pictures/ToolBoxes/Furniture_ToolBox.png")
             elif walls_button.rect.collidepoint(pygame.mouse.get_pos()):
                 active_bookmark = 3
+                cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                tool_selected = 0
                 toolbox = pygame.image.load("Pictures/ToolBoxes/Walls_ToolBox.png")
             elif misc_button.rect.collidepoint(pygame.mouse.get_pos()):
                 active_bookmark = 4
+                cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                tool_selected = 0
                 toolbox = pygame.image.load("Pictures/ToolBoxes/Others_ToolBox.png")
             elif menu_button.rect.collidepoint(pygame.mouse.get_pos()):
                 active_bookmark = 5
+                cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                tool_selected = 0
                 toolbox = pygame.image.load("Pictures/ToolBoxes/Menu_ToolBox.png")
             #sprawdzanie przycisków w zakładkach
             elif active_bookmark == 1:
@@ -248,6 +286,14 @@ while True:
                     terrain.empty()
                     terrain.add(MapElement("Pictures/Biomes/sand_medium.png", canvas_center))
 
+            elif active_bookmark == 2:
+                if size_test.rect.collidepoint(pygame.mouse.get_pos()):
+                    cursor = pygame.image.load(size_test.cursor).convert_alpha()
+                    tool_selected = 1
+                elif pygame.mouse.get_pos() >= (canvas_pos, 0) and pygame.mouse.get_pos() <= (1000, 720) and tool_selected == 1:
+                    map_elements.add(MapElement(size_test.cursor, pygame.mouse.get_pos()))
+
+
             elif active_bookmark == 5 and menu_save_button.rect.collidepoint(pygame.mouse.get_pos()):
                 root = tk.Tk()
                 root.withdraw()
@@ -263,6 +309,8 @@ while True:
                 print("deleted")
                 map_elements.empty()
                 terrain.empty()
+
+
 
     # rozmieszczenie poszczegolnych przestrzeni roboczych
     # kazda pozycja przestrzeni to lewy, gorny rog
