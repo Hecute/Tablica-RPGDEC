@@ -205,13 +205,13 @@ while True:
                 toolbox = pygame.image.load("Pictures/ToolBoxes/Furniture_ToolBox.png")
             elif walls_button.rect.collidepoint(pygame.mouse.get_pos()):
                 active_bookmark = 3
-                toolbox.fill(color=walls_color)
+                toolbox = pygame.image.load("Pictures/ToolBoxes/Walls_ToolBox.png")
             elif misc_button.rect.collidepoint(pygame.mouse.get_pos()):
                 active_bookmark = 4
-                toolbox.fill(color=misc_color)
+                toolbox = pygame.image.load("Pictures/ToolBoxes/Others_ToolBox.png")
             elif menu_button.rect.collidepoint(pygame.mouse.get_pos()):
                 active_bookmark = 5
-                toolbox.fill(color=menu_color)
+                toolbox = pygame.image.load("Pictures/ToolBoxes/Menu_ToolBox.png")
             #sprawdzanie przycisków w zakładkach
             elif active_bookmark == 1:
                 if biome_grass_big.rect.collidepoint(pygame.mouse.get_pos()):
@@ -252,11 +252,12 @@ while True:
                 root = tk.Tk()
                 root.withdraw()
                 path = filedialog.asksaveasfilename(initialdir = "/",title = "Select file",filetypes = (("png files","*.png"),("All","*.*")),defaultextension = ".png")
-                print(path)
-                print("saved")
-                rect = pygame.Rect(280,0,720,720)
-                screenshot = screen.subsurface(rect)
-                pygame.image.save(screenshot,path)
+                if path:
+                    print(path)
+                    print("saved")
+                    rect = pygame.Rect(280,0,720,720)
+                    screenshot = screen.subsurface(rect)
+                    pygame.image.save(screenshot,path)
 
             elif active_bookmark == 5 and menu_delete_button.rect.collidepoint(pygame.mouse.get_pos()):
                 print("deleted")
