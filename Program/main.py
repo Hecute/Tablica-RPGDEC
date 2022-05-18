@@ -112,6 +112,9 @@ menu_save_button = MenuButtons("Pictures/Menu/menu_save_button.jpg", [122.5, 70]
 menu_buttons_group.add(menu_save_button)
 menu_delete_button = MenuButtons("Pictures/Menu/menu_delete_button.png", [122.5, 180])
 menu_buttons_group.add(menu_delete_button)
+menu_eraser = MenuButtons("Pictures/Menu/eraser.png", [95, 250])
+# menu_eraser.image = pygame.transform.scale(menu_eraser.image, (40,40))
+menu_buttons_group.add(menu_eraser)
 #------END MENU BUTTONS-----
 
 #-----BIOME BUTTONS-----
@@ -212,7 +215,7 @@ def display_window():
     map_elements.update()
     map_elements.draw(screen)
 
-    if pygame.mouse.get_pos() >= (canvas_pos, 0) and pygame.mouse.get_pos() <= (1000, 720) and tool_selected == 1:
+    if pygame.mouse.get_pos() >= (canvas_pos, 0) and pygame.mouse.get_pos() <= (1000, 720) and tool_selected !=0:
         pygame.mouse.set_visible(False)
         cords = pygame.mouse.get_pos()
         cursor_rect = cursor.get_rect()
@@ -320,30 +323,70 @@ while True:
 
 
                 elif size_test.rect.collidepoint(mouse_cords):
-                    brush = size_test
+                    # cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                     tool_selected = 1
+
                 elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 1:
                     map_elements.add(MapElement(brush.cursor, mouse_cords))
 
-                if tool_selected != 0:
+                if tool_selected == 1:
                     cursor = pygame.image.load(brush.cursor).convert_alpha()
 
+                # if tool_selected == 2:
+                #     for item in map_elements:
+                #         if item.rect.collidepoint(mouse_cords):
+                #             item.kill()
 
-            elif active_bookmark == 5 and menu_save_button.rect.collidepoint(mouse_cords):
-                root = tk.Tk()
-                root.withdraw()
-                path = filedialog.asksaveasfilename(initialdir = "/",title = "Select file",filetypes = (("png files","*.png"),("All","*.*")),defaultextension = ".png")
-                if path:
-                    print(path)
-                    print("saved")
-                    rect = pygame.Rect(280,0,720,720)
-                    screenshot = screen.subsurface(rect)
-                    pygame.image.save(screenshot,path)
 
-            elif active_bookmark == 5 and menu_delete_button.rect.collidepoint(mouse_cords):
-                print("deleted")
-                map_elements.empty()
-                terrain.empty()
+            # elif active_bookmark == 5 and menu_save_button.rect.collidepoint(mouse_cords):
+            #     root = tk.Tk()
+            #     root.withdraw()
+            #     path = filedialog.asksaveasfilename(initialdir = "/",title = "Select file",filetypes = (("png files","*.png"),("All","*.*")),defaultextension = ".png")
+            #     if path:
+            #         print(path)
+            #         print("saved")
+            #         rect = pygame.Rect(280,0,720,720)
+            #         screenshot = screen.subsurface(rect)
+            #         pygame.image.save(screenshot,path)
+            #
+            # elif active_bookmark == 5 and menu_delete_button.rect.collidepoint(mouse_cords):
+            #     print("deleted")
+            #     map_elements.empty()
+            #     terrain.empty()
+
+            elif active_bookmark == 5:
+                if menu_save_button.rect.collidepoint(mouse_cords):
+                    root = tk.Tk()
+                    root.withdraw()
+                    path = filedialog.asksaveasfilename(initialdir="/",
+                                                        title="Select file",
+                                                        filetypes=(("png files", "*.png"), ("All", "*.*")),
+                                                        defaultextension=".png")
+                    if path:
+                        print(path)
+                        print("saved")
+                        rect = pygame.Rect(280, 0, 720, 720)
+                        screenshot = screen.subsurface(rect)
+                        pygame.image.save(screenshot, path)
+
+                elif menu_delete_button.rect.collidepoint(mouse_cords):
+                    print("deleted")
+                    map_elements.empty()
+                    terrain.empty()
+
+                elif menu_eraser.rect.collidepoint(mouse_cords):
+                    tool_selected = 2
+                    print("gumga :DDD")
+                    cursor = pygame.image.load("Pictures/Menu/eraser.png").convert_alpha()
+
+                elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 2:
+                    for item in map_elements:
+                        if item.rect.collidepoint(mouse_cords):
+                            item.kill()
+
+
+
+
 
 
 
