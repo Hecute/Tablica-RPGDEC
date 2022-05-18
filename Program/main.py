@@ -168,7 +168,7 @@ class MapElement(pygame.sprite.Sprite):
         screen.blit(self.image, position)
 
 
-size_test = MapElement("Pictures/Furniture/cursor.png", [70, 600])
+size_test = MapElement("Pictures/Furniture/table2x1.png", [70, 600])
 furniture_buttons_group.add(size_test)
 
 
