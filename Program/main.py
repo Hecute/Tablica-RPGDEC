@@ -112,6 +112,9 @@ menu_save_button = MenuButtons("Pictures/Menu/menu_save_button.jpg", [122.5, 70]
 menu_buttons_group.add(menu_save_button)
 menu_delete_button = MenuButtons("Pictures/Menu/menu_delete_button.png", [122.5, 180])
 menu_buttons_group.add(menu_delete_button)
+menu_eraser = MenuButtons("Pictures/Menu/eraser.png", [95, 250])
+# menu_eraser.image = pygame.transform.scale(menu_eraser.image, (40,40))
+menu_buttons_group.add(menu_eraser)
 #------END MENU BUTTONS-----
 
 #-----BIOME BUTTONS-----
@@ -167,11 +170,26 @@ class MapElement(pygame.sprite.Sprite):
     def draw_element(self, position):
         screen.blit(self.image, position)
 
+#-----FURNITURE BUTTONS-----
+chair = MapElement("Pictures/Furniture/chair.png", [45, 60])
+furniture_buttons_group.add(chair)
 
-size_test = MapElement("Pictures/Furniture/cursor.png", [70, 600])
+table1x1 = MapElement("Pictures/Furniture/table1x1.png", [95, 60])
+furniture_buttons_group.add(table1x1)
+
+table2x1 = MapElement("Pictures/Furniture/table2x1.png", [170, 60])
+furniture_buttons_group.add(table2x1)
+
+barrel = MapElement("Pictures/Furniture/barrel.png", [50, 110])
+furniture_buttons_group.add(barrel)
+
+bed1x2 = MapElement("Pictures/Furniture/bed1x2.png", [100, 130])
+furniture_buttons_group.add(bed1x2)
+
+size_test = MapElement("Pictures/Furniture/bed1x2.png", [65, 600])
 furniture_buttons_group.add(size_test)
 
-
+brush = 0
 
 #funkcja wywoływana w pętli
 def display_window():
@@ -197,7 +215,7 @@ def display_window():
     map_elements.update()
     map_elements.draw(screen)
 
-    if pygame.mouse.get_pos() >= (canvas_pos, 0) and pygame.mouse.get_pos() <= (1000, 720) and tool_selected == 1:
+    if pygame.mouse.get_pos() >= (canvas_pos, 0) and pygame.mouse.get_pos() <= (1000, 720) and tool_selected !=0:
         pygame.mouse.set_visible(False)
         cords = pygame.mouse.get_pos()
         cursor_rect = cursor.get_rect()
@@ -224,91 +242,151 @@ while True:
 
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            #sprawdzanie zakładek
-            if environment_button.rect.collidepoint(pygame.mouse.get_pos()):
+            mouse_cords = pygame.mouse.get_pos()
+            if environment_button.rect.collidepoint(mouse_cords):
                 active_bookmark = 1
                 cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 tool_selected = 0
                 toolbox = pygame.image.load("Pictures/ToolBoxes/Biome_ToolBox.png")
-            elif furniture_button.rect.collidepoint(pygame.mouse.get_pos()):
+            elif furniture_button.rect.collidepoint(mouse_cords):
                 active_bookmark = 2
                 cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 tool_selected = 0
                 toolbox = pygame.image.load("Pictures/ToolBoxes/Furniture_ToolBox.png")
-            elif walls_button.rect.collidepoint(pygame.mouse.get_pos()):
+            elif walls_button.rect.collidepoint(mouse_cords):
                 active_bookmark = 3
                 cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 tool_selected = 0
                 toolbox = pygame.image.load("Pictures/ToolBoxes/Walls_ToolBox.png")
-            elif misc_button.rect.collidepoint(pygame.mouse.get_pos()):
+            elif misc_button.rect.collidepoint(mouse_cords):
                 active_bookmark = 4
                 cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 tool_selected = 0
                 toolbox = pygame.image.load("Pictures/ToolBoxes/Others_ToolBox.png")
-            elif menu_button.rect.collidepoint(pygame.mouse.get_pos()):
+            elif menu_button.rect.collidepoint(mouse_cords):
                 active_bookmark = 5
                 cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                 tool_selected = 0
                 toolbox = pygame.image.load("Pictures/ToolBoxes/Menu_ToolBox.png")
             #sprawdzanie przycisków w zakładkach
             elif active_bookmark == 1:
-                if biome_grass_big.rect.collidepoint(pygame.mouse.get_pos()):
+                if biome_grass_big.rect.collidepoint(mouse_cords):
                     terrain.empty()
                     terrain.add(MapElement("Pictures/Biomes/grass_big.png", canvas_center))
-                elif biome_grass_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                elif biome_grass_medium.rect.collidepoint(mouse_cords):
                     terrain.empty()
                     terrain.add(MapElement("Pictures/Biomes/grass_medium.png", canvas_center))
-                elif biome_cave_big.rect.collidepoint(pygame.mouse.get_pos()):
+                elif biome_cave_big.rect.collidepoint(mouse_cords):
                   terrain.empty()
                   terrain.add(MapElement("Pictures/Biomes/cave_big.png", canvas_center))
-                elif biome_cave_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                elif biome_cave_medium.rect.collidepoint(mouse_cords):
                     terrain.empty()
                     terrain.add(MapElement("Pictures/Biomes/cave_medium.png", canvas_center))
 
-                elif biome_city_big.rect.collidepoint(pygame.mouse.get_pos()):
+                elif biome_city_big.rect.collidepoint(mouse_cords):
                     terrain.empty()
                     terrain.add(MapElement("Pictures/Biomes/city_big.png", canvas_center))
-                elif biome_city_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                elif biome_city_medium.rect.collidepoint(mouse_cords):
                     terrain.empty()
                     terrain.add(MapElement("Pictures/Biomes/city_medium.png", canvas_center))
 
-                elif biome_water_big.rect.collidepoint(pygame.mouse.get_pos()):
+                elif biome_water_big.rect.collidepoint(mouse_cords):
                     terrain.empty()
                     terrain.add(MapElement("Pictures/Biomes/water_big.png", canvas_center))
-                elif biome_water_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                elif biome_water_medium.rect.collidepoint(mouse_cords):
                     terrain.empty()
                     terrain.add(MapElement("Pictures/Biomes/water_medium.png", canvas_center))
 
-                elif biome_sand_big.rect.collidepoint(pygame.mouse.get_pos()):
+                elif biome_sand_big.rect.collidepoint(mouse_cords):
                     terrain.empty()
                     terrain.add(MapElement("Pictures/Biomes/sand_big.png", canvas_center))
-                elif biome_sand_medium.rect.collidepoint(pygame.mouse.get_pos()):
+                elif biome_sand_medium.rect.collidepoint(mouse_cords):
                     terrain.empty()
                     terrain.add(MapElement("Pictures/Biomes/sand_medium.png", canvas_center))
 
             elif active_bookmark == 2:
-                if size_test.rect.collidepoint(pygame.mouse.get_pos()):
-                    cursor = pygame.image.load(size_test.cursor).convert_alpha()
+                if chair.rect.collidepoint(mouse_cords):
+                    brush = chair
                     tool_selected = 1
-                elif pygame.mouse.get_pos() >= (canvas_pos, 0) and pygame.mouse.get_pos() <= (1000, 720) and tool_selected == 1:
-                    map_elements.add(MapElement(size_test.cursor, pygame.mouse.get_pos()))
+                elif table1x1.rect.collidepoint(mouse_cords):
+                    brush = table1x1
+                    tool_selected = 1
+                elif table2x1.rect.collidepoint(mouse_cords):
+                    brush = table2x1
+                    tool_selected = 1
+                elif barrel.rect.collidepoint(mouse_cords):
+                    brush = barrel
+                    tool_selected = 1
+                elif bed1x2.rect.collidepoint(mouse_cords):
+                    brush = bed1x2
+                    tool_selected = 1
 
 
-            elif active_bookmark == 5 and menu_save_button.rect.collidepoint(pygame.mouse.get_pos()):
-                root = tk.Tk()
-                root.withdraw()
-                path = filedialog.asksaveasfilename(initialdir = "/",title = "Select file",filetypes = (("png files","*.png"),("All","*.*")),defaultextension = ".png")
-                if path:
-                    print(path)
-                    print("saved")
-                    rect = pygame.Rect(280,0,720,720)
-                    screenshot = screen.subsurface(rect)
-                    pygame.image.save(screenshot,path)
+                elif size_test.rect.collidepoint(mouse_cords):
+                    # cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                    tool_selected = 1
 
-            elif active_bookmark == 5 and menu_delete_button.rect.collidepoint(pygame.mouse.get_pos()):
-                print("deleted")
-                map_elements.empty()
-                terrain.empty()
+                elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 1:
+                    map_elements.add(MapElement(brush.cursor, mouse_cords))
+
+                if tool_selected == 1:
+                    cursor = pygame.image.load(brush.cursor).convert_alpha()
+
+                # if tool_selected == 2:
+                #     for item in map_elements:
+                #         if item.rect.collidepoint(mouse_cords):
+                #             item.kill()
+
+
+            # elif active_bookmark == 5 and menu_save_button.rect.collidepoint(mouse_cords):
+            #     root = tk.Tk()
+            #     root.withdraw()
+            #     path = filedialog.asksaveasfilename(initialdir = "/",title = "Select file",filetypes = (("png files","*.png"),("All","*.*")),defaultextension = ".png")
+            #     if path:
+            #         print(path)
+            #         print("saved")
+            #         rect = pygame.Rect(280,0,720,720)
+            #         screenshot = screen.subsurface(rect)
+            #         pygame.image.save(screenshot,path)
+            #
+            # elif active_bookmark == 5 and menu_delete_button.rect.collidepoint(mouse_cords):
+            #     print("deleted")
+            #     map_elements.empty()
+            #     terrain.empty()
+
+            elif active_bookmark == 5:
+                if menu_save_button.rect.collidepoint(mouse_cords):
+                    root = tk.Tk()
+                    root.withdraw()
+                    path = filedialog.asksaveasfilename(initialdir="/",
+                                                        title="Select file",
+                                                        filetypes=(("png files", "*.png"), ("All", "*.*")),
+                                                        defaultextension=".png")
+                    if path:
+                        print(path)
+                        print("saved")
+                        rect = pygame.Rect(280, 0, 720, 720)
+                        screenshot = screen.subsurface(rect)
+                        pygame.image.save(screenshot, path)
+
+                elif menu_delete_button.rect.collidepoint(mouse_cords):
+                    print("deleted")
+                    map_elements.empty()
+                    terrain.empty()
+
+                elif menu_eraser.rect.collidepoint(mouse_cords):
+                    tool_selected = 2
+                    print("gumga :DDD")
+                    cursor = pygame.image.load("Pictures/Menu/eraser.png").convert_alpha()
+
+                elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 2:
+                    for item in map_elements:
+                        if item.rect.collidepoint(mouse_cords):
+                            item.kill()
+
+
+
+
 
 
 
