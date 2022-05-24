@@ -46,7 +46,8 @@ canvas.fill(color=canvas_color)
 bookmarks = pygame.Surface((35, 720))
 bookmarks.fill(color=bookmarks_color)
 toolbox = pygame.Surface((245, 720))
-toolbox.fill(color=toolbox_color)
+# toolbox.fill(color=toolbox_color)
+toolbox = pygame.image.load("Pictures/ToolBoxes/Default_ToolBox.png")
 canvas_pos = toolbox.get_width() + bookmarks.get_width()
 canvas_center = (640, 360)
 big_biome_pos = (canvas_pos + 80, 80)
@@ -108,7 +109,7 @@ class MenuButtons(pygame.sprite.Sprite):
 zapis do pliku
 czyszczenie mapy
 '''
-menu_save_button = MenuButtons("Pictures/Menu/menu_save_button.jpg", [122.5, 70])
+menu_save_button = MenuButtons("Pictures/Menu/menu_save_button.png", [122.5, 90])
 menu_buttons_group.add(menu_save_button)
 menu_delete_button = MenuButtons("Pictures/Menu/menu_delete_button.png", [122.5, 180])
 menu_buttons_group.add(menu_delete_button)
@@ -129,29 +130,29 @@ class BiomeButtons(pygame.sprite.Sprite):
 
 
 
-biome_grass_big = BiomeButtons("Pictures/Biomes/grass_big.png", [70, 70])
+biome_grass_big = BiomeButtons("Pictures/Biomes/grass_big.png", [70, 160])
 biome_buttons_group.add(biome_grass_big)
-biome_grass_medium = BiomeButtons("Pictures/Biomes/grass_medium.png", [175, 70])
+biome_grass_medium = BiomeButtons("Pictures/Biomes/grass_medium.png", [175, 160])
 biome_buttons_group.add(biome_grass_medium)
 
-biome_cave_big = BiomeButtons("Pictures/Biomes/cave_big.png", [70, 170])
+biome_cave_big = BiomeButtons("Pictures/Biomes/cave_big.png", [70, 260])
 biome_buttons_group.add(biome_cave_big)
-biome_cave_medium = BiomeButtons("Pictures/Biomes/cave_medium.png", [175, 170])
+biome_cave_medium = BiomeButtons("Pictures/Biomes/cave_medium.png", [175, 260])
 biome_buttons_group.add(biome_cave_medium)
 
-biome_city_big = BiomeButtons("Pictures/Biomes/city_big.png", [70, 270])
+biome_city_big = BiomeButtons("Pictures/Biomes/city_big.png", [70, 360])
 biome_buttons_group.add(biome_city_big)
-biome_city_medium = BiomeButtons("Pictures/Biomes/city_medium.png", [175, 270])
+biome_city_medium = BiomeButtons("Pictures/Biomes/city_medium.png", [175, 360])
 biome_buttons_group.add(biome_city_medium)
 
-biome_water_big = BiomeButtons("Pictures/Biomes/water_big.png", [70, 370])
+biome_water_big = BiomeButtons("Pictures/Biomes/water_big.png", [70, 460])
 biome_buttons_group.add(biome_water_big)
-biome_water_medium = BiomeButtons("Pictures/Biomes/water_medium.png", [175, 370])
+biome_water_medium = BiomeButtons("Pictures/Biomes/water_medium.png", [175, 460])
 biome_buttons_group.add(biome_water_medium)
 
-biome_sand_big = BiomeButtons("Pictures/Biomes/sand_big.png", [70, 470])
+biome_sand_big = BiomeButtons("Pictures/Biomes/sand_big.png", [70, 560])
 biome_buttons_group.add(biome_sand_big)
-biome_sand_medium = BiomeButtons("Pictures/Biomes/sand_medium.png", [175, 470])
+biome_sand_medium = BiomeButtons("Pictures/Biomes/sand_medium.png", [175, 560])
 biome_buttons_group.add(biome_sand_medium)
 
 
