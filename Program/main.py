@@ -60,34 +60,38 @@ bookmark_height = bookmarks.get_height()/bookmarks_number
 bookmark_x = toolbox.get_width()
 
 class BookmarkButtons(pygame.sprite.Sprite):
-    def __init__(self, position, text, colors):
+    def __init__(self, position, text, image_path):
         super().__init__()
-        self.colors = colors
-        self.font = pygame.font.SysFont("Arial", 30)
+        # self.colors = colors
+        # self.font = pygame.font.SysFont("Arial", 30)
+        self.font = pygame.font.Font("Font/BPdotsUnicaseSquareBold.otf",30)
         self.textSurf = self.font.render(text, 1, "WHITE")
         self.textSurf = pygame.transform.rotate(self.textSurf,270)
-        self.image = pygame.Surface([bookmark_width,bookmark_height])
-        self.image.fill(self.colors)
+        # self.image = pygame.Surface([bookmark_width,bookmark_height])
+        # self.image.fill(self.colors)
+        # self.image = pygame.image.load("Pictures/Bookmarks/Biome_BookMark.png")
+        self.image_path = image_path
+        self.image = pygame.image.load(self.image_path)
         self.x, self.y = position
         self.width = bookmark_width
         self.height = bookmark_height
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.image.blit(self.textSurf,[bookmark_width/2 - self.width/2, bookmark_height/2 - self.height/2])
+        self.image.blit(self.textSurf,[bookmark_width/2 - self.width/2, bookmark_height/2 - self.height/2 + 10])
         self.update()
         bookmarks_buttons.add(self)
 
-    def update(self):
-        pygame.draw.rect(screen, self.colors, (self.x, self.y, self.width, self.height))
+    # def update(self):
+        # pygame.draw.rect(screen, self.colors, (self.x, self.y, self.width, self.height))
 
 
 
 
 
-environment_button = BookmarkButtons((bookmark_x, 0), 'Biom', environment_color)
-furniture_button = BookmarkButtons((bookmark_x, bookmark_height), 'Meble', furniture_color)
-walls_button = BookmarkButtons((bookmark_x, bookmark_height*2), 'Ściany', walls_color)
-misc_button = BookmarkButtons((bookmark_x, bookmark_height*3), 'Różne', misc_color)
-menu_button = BookmarkButtons((bookmark_x, bookmark_height*4), 'Menu', menu_color)
+environment_button = BookmarkButtons((bookmark_x, 0), 'Biom', "Pictures/Bookmarks/Biome_BookMark.png")
+furniture_button = BookmarkButtons((bookmark_x, bookmark_height), 'Meble', "Pictures/Bookmarks/Furniture_BookMark.png")
+walls_button = BookmarkButtons((bookmark_x, bookmark_height*2), 'Ściany', "Pictures/Bookmarks/Walls_BookMark.png")
+misc_button = BookmarkButtons((bookmark_x, bookmark_height*3), 'Różne', "Pictures/Bookmarks/Others_BookMark.png")
+menu_button = BookmarkButtons((bookmark_x, bookmark_height*4), 'Menu', "Pictures/Bookmarks/Menu_BookMark.png")
 
 #------TOOLBOX MENU BUTTONS-----
 
