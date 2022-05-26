@@ -118,7 +118,7 @@ menu_buttons_group.add(menu_save_button)
 menu_delete_button = MenuButtons("Pictures/Menu/menu_delete_button.png", [122.5, 180])
 menu_buttons_group.add(menu_delete_button)
 menu_eraser = MenuButtons("Pictures/Menu/eraser.png", [95, 250])
-# menu_eraser.image = pygame.transform.scale(menu_eraser.image, (40,40))
+menu_eraser.image = pygame.transform.scale(menu_eraser.image, (80,80))
 menu_buttons_group.add(menu_eraser)
 #------END MENU BUTTONS-----
 
@@ -381,13 +381,16 @@ while True:
 
                 elif menu_eraser.rect.collidepoint(mouse_cords):
                     tool_selected = 2
-                    print("gumga :DDD")
                     cursor = pygame.image.load("Pictures/Menu/eraser.png").convert_alpha()
+                    cursor = pygame.transform.scale(cursor, (40, 40))
 
                 elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 2:
-                    for item in map_elements:
+                    sprites = map_elements.sprites()
+                    for item in sprites[::-1]:
                         if item.rect.collidepoint(mouse_cords):
                             item.kill()
+                            break
+
 
 
 
