@@ -1,5 +1,6 @@
 import pygame
 from sys import exit
+from os.path import exists
 import tkinter as tk
 from tkinter import filedialog
 #Przydatne strony:
@@ -179,22 +180,80 @@ class MapElement(pygame.sprite.Sprite):
 chair = MapElement("Pictures/Furniture/chair.png", [45, 60])
 furniture_buttons_group.add(chair)
 
-table1x1 = MapElement("Pictures/Furniture/table1x1.png", [95, 60])
-furniture_buttons_group.add(table1x1)
+table_small = MapElement("Pictures/Furniture/table_small.png", [95, 60])
+furniture_buttons_group.add(table_small)
 
-table2x1 = MapElement("Pictures/Furniture/table2x1.png", [170, 60])
-furniture_buttons_group.add(table2x1)
+table_long = MapElement("Pictures/Furniture/table_long1.png", [170, 60])
+furniture_buttons_group.add(table_long)
 
 barrel = MapElement("Pictures/Furniture/barrel.png", [50, 110])
 furniture_buttons_group.add(barrel)
 
-bed1x2 = MapElement("Pictures/Furniture/bed1x2.png", [100, 130])
-furniture_buttons_group.add(bed1x2)
+bed_small = MapElement("Pictures/Furniture/bed_small1.png", [100, 130])
+furniture_buttons_group.add(bed_small)
 
-size_test = MapElement("Pictures/Furniture/bed1x2.png", [65, 600])
-furniture_buttons_group.add(size_test)
+bed_big = MapElement("Pictures/Furniture/bed_big.png", [175, 130])
+furniture_buttons_group.add(bed_big)
+
+wardrobe_small = MapElement("Pictures/Furniture/wardrobe_small.png", [50, 180])
+furniture_buttons_group.add(wardrobe_small)
+
+bench_long = MapElement("Pictures/Furniture/bench_long.png", [120, 185])
+furniture_buttons_group.add(bench_long)
+
+
+
+rotate_left = MapElement("Pictures/Furniture/barrel.png", [65, 600])
+furniture_buttons_group.add(rotate_left)
+
+rotate_right = MapElement("Pictures/Furniture/barrel.png", [100, 600])
+furniture_buttons_group.add(rotate_right)
 
 brush = 0
+
+def rotate_sprite_left():
+    if tool_selected == 1:
+        brush_name = brush.cursor
+        brush_rotate = brush_name[-5::5]
+        if brush_rotate == '1' or brush_rotate == '2' or \
+                brush_rotate == '3' or brush_rotate == '4':
+            brush_rotate = int(brush_rotate)
+            if brush_rotate == 4:
+                brush_rotate = 1
+            else:
+                brush_rotate += 1
+            brush_temp = brush_name[:-5] + str(brush_rotate) + brush_name[-4::1]
+            brush_name = brush_temp
+
+            if exists(brush_name):
+                brush.cursor = brush_name
+            else:
+                brush_temp = brush_name[:-5] + '1' + brush_name[-4::1]
+                brush_name = brush_temp
+                brush.cursor = brush_name
+
+
+def rotate_sprite_right():
+    if tool_selected == 1:
+        brush_name = brush.cursor
+        brush_rotate = brush_name[-5::5]
+        if brush_rotate == '1' or brush_rotate == '2' or \
+                brush_rotate == '3' or brush_rotate == '4':
+            brush_rotate = int(brush_rotate)
+            if brush_rotate == 1:
+                brush_rotate = 4
+            else:
+                brush_rotate -= 1
+            brush_temp = brush_name[:-5] + str(brush_rotate) + brush_name[-4::1]
+            brush_name = brush_temp
+
+            if exists(brush_name):
+                brush.cursor = brush_name
+            else:
+                brush_temp = brush_name[:-5] + '2' + brush_name[-4::1]
+                brush_name = brush_temp
+                brush.cursor = brush_name
+
 
 #funkcja wywoływana w pętli
 def display_window():
@@ -243,8 +302,6 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-
-
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_cords = pygame.mouse.get_pos()
@@ -313,51 +370,38 @@ while True:
                 if chair.rect.collidepoint(mouse_cords):
                     brush = chair
                     tool_selected = 1
-                elif table1x1.rect.collidepoint(mouse_cords):
-                    brush = table1x1
+                elif table_small.rect.collidepoint(mouse_cords):
+                    brush = table_small
                     tool_selected = 1
-                elif table2x1.rect.collidepoint(mouse_cords):
-                    brush = table2x1
+                elif table_long.rect.collidepoint(mouse_cords):
+                    brush = table_long
                     tool_selected = 1
                 elif barrel.rect.collidepoint(mouse_cords):
                     brush = barrel
                     tool_selected = 1
-                elif bed1x2.rect.collidepoint(mouse_cords):
-                    brush = bed1x2
+                elif bed_small.rect.collidepoint(mouse_cords):
+                    brush = bed_small
+                    tool_selected = 1
+                elif bed_big.rect.collidepoint(mouse_cords):
+                    brush = bed_big
+                    tool_selected = 1
+                elif wardrobe_small.rect.collidepoint(mouse_cords):
+                    brush = wardrobe_small
+                    tool_selected = 1
+                elif bench_long.rect.collidepoint(mouse_cords):
+                    brush = bench_long
                     tool_selected = 1
 
-
-                elif size_test.rect.collidepoint(mouse_cords):
-                    # cursor = pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                    tool_selected = 1
+                elif rotate_left.rect.collidepoint(mouse_cords):
+                    rotate_sprite_left()
+                elif rotate_right.rect.collidepoint(mouse_cords):
+                    rotate_sprite_right()
 
                 elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 1:
                     map_elements.add(MapElement(brush.cursor, mouse_cords))
 
                 if tool_selected == 1:
                     cursor = pygame.image.load(brush.cursor).convert_alpha()
-
-                # if tool_selected == 2:
-                #     for item in map_elements:
-                #         if item.rect.collidepoint(mouse_cords):
-                #             item.kill()
-
-
-            # elif active_bookmark == 5 and menu_save_button.rect.collidepoint(mouse_cords):
-            #     root = tk.Tk()
-            #     root.withdraw()
-            #     path = filedialog.asksaveasfilename(initialdir = "/",title = "Select file",filetypes = (("png files","*.png"),("All","*.*")),defaultextension = ".png")
-            #     if path:
-            #         print(path)
-            #         print("saved")
-            #         rect = pygame.Rect(280,0,720,720)
-            #         screenshot = screen.subsurface(rect)
-            #         pygame.image.save(screenshot,path)
-            #
-            # elif active_bookmark == 5 and menu_delete_button.rect.collidepoint(mouse_cords):
-            #     print("deleted")
-            #     map_elements.empty()
-            #     terrain.empty()
 
             elif active_bookmark == 5:
                 if menu_save_button.rect.collidepoint(mouse_cords):
@@ -391,6 +435,16 @@ while True:
                             item.kill()
                             break
 
+        if event.type == pygame.KEYDOWN:
+            if tool_selected == 1:
+                if event.key == pygame.K_q:
+                    rotate_sprite_left()
+                if event.key == pygame.K_e:
+                    rotate_sprite_right()
+                if event.key == pygame.K_ESCAPE:
+                    tool_selected = 0
+
+                cursor = pygame.image.load(brush.cursor).convert_alpha()
 
 
 
