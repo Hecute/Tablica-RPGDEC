@@ -23,6 +23,7 @@ menu_buttons_group = pygame.sprite.Group()
 biome_buttons_group = pygame.sprite.Group()
 furniture_buttons_group = pygame.sprite.Group()
 terrain = pygame.sprite.Group()
+grid = pygame.sprite.Group()
 map_elements = pygame.sprite.Group()
 
 active_bookmark = 0 #Gdy klikniesz na zakładkę pierwszą to active_bookmark = 1 itp.
@@ -116,11 +117,28 @@ czyszczenie mapy
 '''
 menu_save_button = MenuButtons("Pictures/Menu/menu_save_button.png", [122.5, 90])
 menu_buttons_group.add(menu_save_button)
+
 menu_delete_button = MenuButtons("Pictures/Menu/menu_delete_button.png", [122.5, 180])
 menu_buttons_group.add(menu_delete_button)
+
 menu_eraser = MenuButtons("Pictures/Menu/menu_eraser_button.png", [122.5, 270])
-# menu_eraser.image = pygame.transform.scale(menu_eraser.image, (80,80))
 menu_buttons_group.add(menu_eraser)
+
+menu_square_grid = MenuButtons("Pictures/Menu/menu_save_button.png", [62.5, 360])
+menu_square_grid.image = pygame.transform.scale(menu_square_grid.image, (60,60))
+menu_buttons_group.add(menu_square_grid)
+
+menu_hex_grid = MenuButtons("Pictures/Menu/menu_save_button.png", [132.5, 360])
+menu_hex_grid.image = pygame.transform.scale(menu_hex_grid.image, (60,60))
+menu_buttons_group.add(menu_hex_grid)
+
+menu_no_grid = MenuButtons("Pictures/Menu/menu_save_button.png", [202.5, 360])
+menu_no_grid.image = pygame.transform.scale(menu_no_grid.image, (60,60))
+menu_buttons_group.add(menu_no_grid)
+
+
+
+
 #------END MENU BUTTONS-----
 
 #-----BIOME BUTTONS-----
@@ -278,6 +296,8 @@ def display_window():
     terrain.draw(screen)
     map_elements.update()
     map_elements.draw(screen)
+    grid.update()
+    grid.draw(screen)
 
     if pygame.mouse.get_pos() >= (canvas_pos, 0) and pygame.mouse.get_pos() <= (1000, 720) and tool_selected !=0:
         pygame.mouse.set_visible(False)
@@ -413,20 +433,28 @@ while True:
                                                         defaultextension=".png")
                     if path:
                         print(path)
-                        print("saved")
                         rect = pygame.Rect(280, 0, 720, 720)
                         screenshot = screen.subsurface(rect)
                         pygame.image.save(screenshot, path)
 
                 elif menu_delete_button.rect.collidepoint(mouse_cords):
-                    print("deleted")
                     map_elements.empty()
                     terrain.empty()
+                    grid.empty()
 
                 elif menu_eraser.rect.collidepoint(mouse_cords):
                     tool_selected = 2
                     cursor = pygame.image.load("Pictures/Menu/eraser2.png").convert_alpha()
                     # cursor = pygame.transform.scale(cursor, (50, 50))
+
+                elif menu_square_grid.rect.collidepoint(mouse_cords):
+                    grid.empty()
+                    grid.add(MapElement("Pictures/Menu/square_grid.png", canvas_center))
+                elif menu_hex_grid.rect.collidepoint(mouse_cords):
+                    grid.empty()
+                    grid.add(MapElement("Pictures/Menu/hex_grid.png", canvas_center))
+                elif menu_no_grid.rect.collidepoint(mouse_cords):
+                    grid.empty()
 
                 elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 2:
                     sprites = map_elements.sprites()
@@ -439,12 +467,22 @@ while True:
             if tool_selected == 1:
                 if event.key == pygame.K_q:
                     rotate_sprite_left()
-                if event.key == pygame.K_e:
+                elif event.key == pygame.K_e:
                     rotate_sprite_right()
-                if event.key == pygame.K_ESCAPE:
+                elif event.key == pygame.K_ESCAPE:
                     tool_selected = 0
 
                 cursor = pygame.image.load(brush.cursor).convert_alpha()
+
+            if event.key == pygame.K_g:
+                    grid.empty()
+                    grid.add(MapElement("Pictures/Menu/square_grid.png", canvas_center))
+            elif event.key == pygame.K_h:
+                    grid.empty()
+                    grid.add(MapElement("Pictures/Menu/hex_grid.png", canvas_center))
+            elif event.key == pygame.K_n:
+                    grid.empty()
+
 
 
 
