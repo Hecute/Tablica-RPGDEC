@@ -124,16 +124,16 @@ menu_buttons_group.add(menu_delete_button)
 menu_eraser = MenuButtons("Pictures/Menu/menu_eraser_button.png", [122.5, 270])
 menu_buttons_group.add(menu_eraser)
 
-menu_square_grid = MenuButtons("Pictures/Menu/menu_save_button.png", [62.5, 360])
-menu_square_grid.image = pygame.transform.scale(menu_square_grid.image, (60,60))
+menu_square_grid = MenuButtons("Pictures/Menu/menu_square_grid.png", [122.5, 360])
+menu_square_grid.image = pygame.transform.scale(menu_square_grid.image, (80,80))
 menu_buttons_group.add(menu_square_grid)
 
-menu_hex_grid = MenuButtons("Pictures/Menu/menu_save_button.png", [132.5, 360])
-menu_hex_grid.image = pygame.transform.scale(menu_hex_grid.image, (60,60))
+menu_hex_grid = MenuButtons("Pictures/Menu/menu_hex_grid.png", [122.5, 450])
+menu_hex_grid.image = pygame.transform.scale(menu_hex_grid.image, (80,80))
 menu_buttons_group.add(menu_hex_grid)
 
-menu_no_grid = MenuButtons("Pictures/Menu/menu_save_button.png", [202.5, 360])
-menu_no_grid.image = pygame.transform.scale(menu_no_grid.image, (60,60))
+menu_no_grid = MenuButtons("Pictures/Menu/menu_no_grid.png", [122.5, 540])
+menu_no_grid.image = pygame.transform.scale(menu_no_grid.image, (80,80))
 menu_buttons_group.add(menu_no_grid)
 
 
@@ -452,7 +452,7 @@ while True:
                     grid.add(MapElement("Pictures/Menu/square_grid.png", canvas_center))
                 elif menu_hex_grid.rect.collidepoint(mouse_cords):
                     grid.empty()
-                    grid.add(MapElement("Pictures/Menu/hex_grid.png", canvas_center))
+                    grid.add(MapElement("Pictures/Menu/hex_grid_thin.png", canvas_center))
                 elif menu_no_grid.rect.collidepoint(mouse_cords):
                     grid.empty()
 
@@ -479,7 +479,7 @@ while True:
                     grid.add(MapElement("Pictures/Menu/square_grid.png", canvas_center))
             elif event.key == pygame.K_h:
                     grid.empty()
-                    grid.add(MapElement("Pictures/Menu/hex_grid.png", canvas_center))
+                    grid.add(MapElement("Pictures/Menu/hex_grid_thin.png", canvas_center))
             elif event.key == pygame.K_n:
                     grid.empty()
 
