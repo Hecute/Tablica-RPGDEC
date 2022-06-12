@@ -221,10 +221,10 @@ furniture_buttons_group.add(bench_long)
 
 
 
-rotate_left = MapElement("Pictures/Furniture/barrel.png", [65, 600])
+rotate_left = MapElement("Pictures/Furniture/rotate_left.png", [80, 600])
 furniture_buttons_group.add(rotate_left)
 
-rotate_right = MapElement("Pictures/Furniture/barrel.png", [100, 600])
+rotate_right = MapElement("Pictures/Furniture/rotate_right.png", [170, 600])
 furniture_buttons_group.add(rotate_right)
 
 brush = 0
