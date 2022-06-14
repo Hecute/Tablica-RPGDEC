@@ -216,7 +216,7 @@ furniture_buttons_group.add(bed_big)
 wardrobe_small = MapElement("Pictures/Furniture/wardrobe_small1.png", [50, 180])
 furniture_buttons_group.add(wardrobe_small)
 
-bench_long = MapElement("Pictures/Furniture/bench_long.png", [120, 185])
+bench_long = MapElement("Pictures/Furniture/bench_long1.png", [120, 185])
 furniture_buttons_group.add(bench_long)
 
 
