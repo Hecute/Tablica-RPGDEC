@@ -210,10 +210,10 @@ furniture_buttons_group.add(barrel)
 bed_small = MapElement("Pictures/Furniture/bed_small1.png", [100, 130])
 furniture_buttons_group.add(bed_small)
 
-bed_big = MapElement("Pictures/Furniture/bed_big.png", [175, 130])
+bed_big = MapElement("Pictures/Furniture/bed_big1.png", [175, 130])
 furniture_buttons_group.add(bed_big)
 
-wardrobe_small = MapElement("Pictures/Furniture/wardrobe_small.png", [50, 180])
+wardrobe_small = MapElement("Pictures/Furniture/wardrobe_small1.png", [50, 180])
 furniture_buttons_group.add(wardrobe_small)
 
 bench_long = MapElement("Pictures/Furniture/bench_long.png", [120, 185])
