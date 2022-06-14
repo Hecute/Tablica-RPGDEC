@@ -195,7 +195,7 @@ class MapElement(pygame.sprite.Sprite):
         screen.blit(self.image, position)
 
 #-----FURNITURE BUTTONS-----
-chair = MapElement("Pictures/Furniture/chair.png", [45, 60])
+chair = MapElement("Pictures/Furniture/chair1.png", [45, 60])
 furniture_buttons_group.add(chair)
 
 table_small = MapElement("Pictures/Furniture/table_small.png", [95, 60])
@@ -476,7 +476,7 @@ while True:
 
             if event.key == pygame.K_g:
                     grid.empty()
-                    grid.add(MapElement("Pictures/Menu/square_grid.png", canvas_center))
+                    grid.add(MapElement("Pictures/Menu/square_grid_thin.png", canvas_center))
             elif event.key == pygame.K_h:
                     grid.empty()
                     grid.add(MapElement("Pictures/Menu/hex_grid_thin.png", canvas_center))
