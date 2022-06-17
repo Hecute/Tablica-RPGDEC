@@ -22,6 +22,7 @@ bookmarks_buttons = pygame.sprite.Group()
 menu_buttons_group = pygame.sprite.Group()
 biome_buttons_group = pygame.sprite.Group()
 furniture_buttons_group = pygame.sprite.Group()
+wall_buttons_group = pygame.sprite.Group()
 terrain = pygame.sprite.Group()
 grid = pygame.sprite.Group()
 map_elements = pygame.sprite.Group()
@@ -227,7 +228,19 @@ furniture_buttons_group.add(rotate_left)
 rotate_right = MapElement("Pictures/Furniture/rotate_right.png", [170, 600])
 furniture_buttons_group.add(rotate_right)
 
+#-----WALL BUTTONS----
+brick_wall_button = MapElement("Pictures/Walls/brick.jpg", [45,85])
+wall_buttons_group.add(brick_wall_button)
+
+wooden_wall_button = MapElement("Pictures/Walls/wood.jpg", [95, 85])
+wall_buttons_group.add(wooden_wall_button)
+
+stone_wall_button = MapElement("Pictures/Walls/stone.jpg", [145, 85])
+wall_buttons_group.add(stone_wall_button)
+
+
 brush = 0
+
 
 def rotate_sprite_left():
     if tool_selected == 1:
@@ -279,8 +292,6 @@ def display_window():
     #screen.blit(bookmarks, (245, 0))
     screen.blit(toolbox, (0, 0))
 
-    bookmarks_buttons.update()
-    bookmarks_buttons.draw(screen)
     #Gdy włączysz zakładkę "MENU" pojawiają się przyciski
     if active_bookmark == 1:
         biome_buttons_group.update()
@@ -288,6 +299,9 @@ def display_window():
     elif active_bookmark == 2:
         furniture_buttons_group.update()
         furniture_buttons_group.draw(screen)
+    elif active_bookmark == 3:
+        wall_buttons_group.update()
+        wall_buttons_group.draw(screen)
     elif active_bookmark == 5:
         menu_buttons_group.update()
         menu_buttons_group.draw(screen)
@@ -299,6 +313,8 @@ def display_window():
     grid.update()
     grid.draw(screen)
 
+    bookmarks_buttons.update()
+    bookmarks_buttons.draw(screen)
     if pygame.mouse.get_pos() >= (canvas_pos, 0) and pygame.mouse.get_pos() <= (1000, 720) and tool_selected !=0:
         pygame.mouse.set_visible(False)
         cords = pygame.mouse.get_pos()
@@ -416,6 +432,23 @@ while True:
                     rotate_sprite_left()
                 elif rotate_right.rect.collidepoint(mouse_cords):
                     rotate_sprite_right()
+
+                elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 1:
+                    map_elements.add(MapElement(brush.cursor, mouse_cords))
+
+                if tool_selected == 1:
+                    cursor = pygame.image.load(brush.cursor).convert_alpha()
+
+            elif active_bookmark == 3:
+                if brick_wall_button.rect.collidepoint(mouse_cords):
+                    brush = brick_wall_button
+                    tool_selected = 1
+                elif wooden_wall_button.rect.collidepoint(mouse_cords):
+                    brush = wooden_wall_button
+                    tool_selected = 1
+                elif stone_wall_button.rect.collidepoint(mouse_cords):
+                    brush = stone_wall_button
+                    tool_selected = 1
 
                 elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 1:
                     map_elements.add(MapElement(brush.cursor, mouse_cords))
