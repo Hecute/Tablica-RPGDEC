@@ -23,6 +23,7 @@ menu_buttons_group = pygame.sprite.Group()
 biome_buttons_group = pygame.sprite.Group()
 furniture_buttons_group = pygame.sprite.Group()
 wall_buttons_group = pygame.sprite.Group()
+others_buttons_group = pygame.sprite.Group()
 terrain = pygame.sprite.Group()
 grid = pygame.sprite.Group()
 map_elements = pygame.sprite.Group()
@@ -50,7 +51,21 @@ bookmarks = pygame.Surface((35, 720))
 bookmarks.fill(color=bookmarks_color)
 toolbox = pygame.Surface((245, 720))
 # toolbox.fill(color=toolbox_color)
+# Default Tool Box
 toolbox = pygame.image.load("Pictures/ToolBoxes/Default_ToolBox.png")
+font = pygame.font.Font("Font/BPdotsUnicaseSquareBold.otf",22)
+font_title = pygame.font.Font("Font/BPdotsUnicaseSquareBold.otf",35)
+textSurf = font_title.render("RPG DECK", 1, "BLACK")
+toolbox.blit(textSurf, (40,50))
+
+textSurf = font.render("NATALIA GRUDZIEŃ", 1, "BLACK")
+toolbox.blit(textSurf, (15,560))
+textSurf = font.render("MATEUSZ WASYLUK", 1, "BLACK")
+toolbox.blit(textSurf, (15,590))
+textSurf = font.render("MARTA WIŚNIEWSKA", 1, "BLACK")
+toolbox.blit(textSurf, (15,620))
+
+
 canvas_pos = toolbox.get_width() + bookmarks.get_width()
 canvas_center = (640, 360)
 big_biome_pos = (canvas_pos + 80, 80)
@@ -220,6 +235,10 @@ furniture_buttons_group.add(wardrobe_small)
 bench_long = MapElement("Pictures/Furniture/bench_long1.png", [120, 185])
 furniture_buttons_group.add(bench_long)
 
+chest = MapElement("Pictures/Furniture/chest1.png", [190, 200])
+furniture_buttons_group.add(chest)
+
+
 
 
 rotate_left = MapElement("Pictures/Furniture/rotate_left.png", [80, 600])
@@ -237,6 +256,21 @@ wall_buttons_group.add(wooden_wall_button)
 
 stone_wall_button = MapElement("Pictures/Walls/stone.jpg", [145, 85])
 wall_buttons_group.add(stone_wall_button)
+
+
+#-----FURNITURE BUTTONS-----
+bushes = MapElement("Pictures/Others/bushes.png", [50, 100])
+others_buttons_group.add(bushes)
+
+cactus1 = MapElement("Pictures/Others/Cactus1.png", [100, 80])
+others_buttons_group.add(cactus1)
+
+rock1 = MapElement("Pictures/Others/rock1.png", [200, 100])
+others_buttons_group.add(rock1)
+
+tree1 = MapElement("Pictures/Others/Tree1.png", [150, 80])
+others_buttons_group.add(tree1)
+
 
 
 brush = 0
@@ -302,6 +336,9 @@ def display_window():
     elif active_bookmark == 3:
         wall_buttons_group.update()
         wall_buttons_group.draw(screen)
+    elif active_bookmark == 4:
+        others_buttons_group.update()
+        others_buttons_group.draw(screen)
     elif active_bookmark == 5:
         menu_buttons_group.update()
         menu_buttons_group.draw(screen)
@@ -428,6 +465,10 @@ while True:
                     brush = bench_long
                     tool_selected = 1
 
+                elif chest.rect.collidepoint(mouse_cords):
+                    brush = chest
+                    tool_selected = 1
+
                 elif rotate_left.rect.collidepoint(mouse_cords):
                     rotate_sprite_left()
                 elif rotate_right.rect.collidepoint(mouse_cords):
@@ -455,7 +496,28 @@ while True:
 
                 if tool_selected == 1:
                     cursor = pygame.image.load(brush.cursor).convert_alpha()
+            elif active_bookmark == 4:
+                if bushes.rect.collidepoint(mouse_cords):
+                    brush = bushes
+                    tool_selected = 1
 
+                if cactus1.rect.collidepoint(mouse_cords):
+                    brush = cactus1
+                    tool_selected = 1
+
+                if rock1.rect.collidepoint(mouse_cords):
+                    brush = rock1
+                    tool_selected = 1
+
+                if tree1.rect.collidepoint(mouse_cords):
+                    brush = tree1
+                    tool_selected = 1
+
+                elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 1:
+                    map_elements.add(MapElement(brush.cursor, mouse_cords))
+
+                if tool_selected == 1:
+                    cursor = pygame.image.load(brush.cursor).convert_alpha()
             elif active_bookmark == 5:
                 if menu_save_button.rect.collidepoint(mouse_cords):
                     root = tk.Tk()
