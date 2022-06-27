@@ -3,17 +3,7 @@ from sys import exit
 from os.path import exists
 import tkinter as tk
 from tkinter import filedialog
-#Przydatne strony:
-#https://www.youtube.com/watch?v=AY9MnQ4x3zk&t=6357s (tutorial)
-#https://coolors.co (gotowe palety barw, kreator palet)
 
-'''
--środowisko
--meble
--ściany
--obiekty
--Menu
-'''
 
 pygame.init()
 pygame.font.init()
@@ -80,14 +70,9 @@ bookmark_x = toolbox.get_width()
 class BookmarkButtons(pygame.sprite.Sprite):
     def __init__(self, position, text, image_path):
         super().__init__()
-        # self.colors = colors
-        # self.font = pygame.font.SysFont("Arial", 30)
         self.font = pygame.font.Font("Font/BPdotsUnicaseSquareBold.otf",30)
         self.textSurf = self.font.render(text, 1, "WHITE")
         self.textSurf = pygame.transform.rotate(self.textSurf,270)
-        # self.image = pygame.Surface([bookmark_width,bookmark_height])
-        # self.image.fill(self.colors)
-        # self.image = pygame.image.load("Pictures/Bookmarks/Biome_BookMark.png")
         self.image_path = image_path
         self.image = pygame.image.load(self.image_path)
         self.x, self.y = position
@@ -97,10 +82,6 @@ class BookmarkButtons(pygame.sprite.Sprite):
         self.image.blit(self.textSurf,[bookmark_width/2 - self.width/2, bookmark_height/2 - self.height/2 + 10])
         self.update()
         bookmarks_buttons.add(self)
-
-    # def update(self):
-        # pygame.draw.rect(screen, self.colors, (self.x, self.y, self.width, self.height))
-
 
 
 
@@ -151,6 +132,9 @@ menu_buttons_group.add(menu_hex_grid)
 menu_no_grid = MenuButtons("Pictures/Menu/menu_no_grid.png", [122.5, 540])
 menu_no_grid.image = pygame.transform.scale(menu_no_grid.image, (80,80))
 menu_buttons_group.add(menu_no_grid)
+
+menu_new_brush = MenuButtons("Pictures/Menu/menu_new_brush.png", [122.5, 630])
+menu_buttons_group.add(menu_new_brush)
 
 
 
@@ -258,7 +242,7 @@ stone_wall_button = MapElement("Pictures/Walls/stone.jpg", [145, 85])
 wall_buttons_group.add(stone_wall_button)
 
 
-#-----FURNITURE BUTTONS-----
+#-----OTHER BUTTONS-----
 bushes = MapElement("Pictures/Others/bushes.png", [35, 100])
 others_buttons_group.add(bushes)
 
@@ -594,7 +578,6 @@ while True:
                                                         filetypes=(("png files", "*.png"), ("All", "*.*")),
                                                         defaultextension=".png")
                     if path:
-                        print(path)
                         rect = pygame.Rect(280, 0, 720, 720)
                         screenshot = screen.subsurface(rect)
                         pygame.image.save(screenshot, path)
@@ -607,7 +590,6 @@ while True:
                 elif menu_eraser.rect.collidepoint(mouse_cords):
                     tool_selected = 2
                     cursor = pygame.image.load("Pictures/Menu/eraser2.png").convert_alpha()
-                    # cursor = pygame.transform.scale(cursor, (50, 50))
 
                 elif menu_square_grid.rect.collidepoint(mouse_cords):
                     grid.empty()
@@ -618,12 +600,26 @@ while True:
                 elif menu_no_grid.rect.collidepoint(mouse_cords):
                     grid.empty()
 
+                elif menu_new_brush.rect.collidepoint(mouse_cords):
+                    root = tk.Tk()
+                    root.withdraw()
+                    path = filedialog.askopenfilename(initialdir="Pictures",
+                                                      title='Select file',
+                                                      filetypes=(("PNG files", "*.png"), ("JPG files", ".jpg")),
+                                                      defaultextension=".png")
+                    if path:
+                        cursor = pygame.image.load(path).convert_alpha()
+                        tool_selected = 1
+
                 elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 2:
                     sprites = map_elements.sprites()
                     for item in sprites[::-1]:
                         if item.rect.collidepoint(mouse_cords):
                             item.kill()
                             break
+
+                elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 1:
+                    map_elements.add(MapElement(path, mouse_cords))
 
         if event.type == pygame.KEYDOWN:
             if tool_selected == 1:
