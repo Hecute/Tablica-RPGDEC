@@ -33,7 +33,7 @@ active_biome = 0
 tool_selected = 0
 
 #kolory
-canvas_color = [130, 192, 204]
+canvas_color = "BLACK"
 bookmarks_color = [237, 231, 227]
 toolbox_color = [255, 166, 43]
 
@@ -55,14 +55,14 @@ toolbox = pygame.Surface((245, 720))
 toolbox = pygame.image.load("Pictures/ToolBoxes/Default_ToolBox.png")
 font = pygame.font.Font("Font/BPdotsUnicaseSquareBold.otf",22)
 font_title = pygame.font.Font("Font/BPdotsUnicaseSquareBold.otf",35)
-textSurf = font_title.render("RPG DECK", 1, "BLACK")
+textSurf = font_title.render("RPG DECK", 1, [80,62,52])
 toolbox.blit(textSurf, (40,50))
 
-textSurf = font.render("NATALIA GRUDZIEŃ", 1, "BLACK")
+textSurf = font.render("NATALIA GRUDZIEŃ", 1, [80,62,52])
 toolbox.blit(textSurf, (15,560))
-textSurf = font.render("MATEUSZ WASYLUK", 1, "BLACK")
+textSurf = font.render("MATEUSZ WASYLUK", 1, [80,62,52])
 toolbox.blit(textSurf, (15,590))
-textSurf = font.render("MARTA WIŚNIEWSKA", 1, "BLACK")
+textSurf = font.render("MARTA WIŚNIEWSKA", 1, [80,62,52])
 toolbox.blit(textSurf, (15,620))
 
 
@@ -259,21 +259,67 @@ wall_buttons_group.add(stone_wall_button)
 
 
 #-----FURNITURE BUTTONS-----
-bushes = MapElement("Pictures/Others/bushes.png", [50, 100])
+bushes = MapElement("Pictures/Others/bushes.png", [35, 100])
 others_buttons_group.add(bushes)
 
-cactus1 = MapElement("Pictures/Others/Cactus1.png", [100, 80])
+cactus1 = MapElement("Pictures/Others/CactusI.png", [85, 180])
 others_buttons_group.add(cactus1)
+cactus2 = MapElement("Pictures/Others/CactusII.png", [135, 180])
+others_buttons_group.add(cactus2)
+cactus3 = MapElement("Pictures/Others/CactusIII.png", [35, 200])
+others_buttons_group.add(cactus3)
+cactus4 = MapElement("Pictures/Others/CactusIV.png", [195, 180])
+others_buttons_group.add(cactus4)
 
-rock1 = MapElement("Pictures/Others/rock1.png", [200, 100])
-others_buttons_group.add(rock1)
-
-tree1 = MapElement("Pictures/Others/Tree1.png", [150, 80])
+tree1 = MapElement("Pictures/Others/TreeI.png", [85, 80])
 others_buttons_group.add(tree1)
+tree2 = MapElement("Pictures/Others/TreeII.png", [135, 80])
+others_buttons_group.add(tree2)
+tree3 = MapElement("Pictures/Others/TreeIII.png", [195, 80])
+others_buttons_group.add(tree3)
+
+rock1 = MapElement("Pictures/Others/rockI.png", [85, 250])
+others_buttons_group.add(rock1)
+rock2 = MapElement("Pictures/Others/rockII.png", [135,250])
+others_buttons_group.add(rock2)
 
 
 
 brush = 0
+
+def roundCoords(x,y):
+    size = brush.image.get_size()
+    brush_name = brush.cursor
+    brush_rotate = brush_name[-5::5]
+    #print(size)
+    numx = x // 40
+    numy = y // 40
+    if (size == (40,40)):
+        x = (numx * 40) + 20
+        y = (numy * 40) + 20
+    elif(size == (80,40) and (brush_rotate == '1' or brush_rotate == '3')):
+        x = (numx * 40)
+        y = (numy * 40) + 20
+    elif (size == (80, 40) and (brush_rotate == '2' or brush_rotate == '4')):
+        x = (numx * 40) + 20
+        y = (numy * 40) + 40
+    elif (size == (40,80)):
+        if (brush_rotate not in ['1','2','3','4']) or (brush_rotate == '1' or brush_rotate == '3'):
+            x = (numx * 40) + 20
+            y = (numy * 40) + 40
+        elif (brush_rotate == '2' or brush_rotate == '4') and "wardrobe_small" not in brush_name:
+            x = (numx * 40) + 40
+            y = (numy * 40) + 20
+        elif (brush_rotate == '2' or brush_rotate == '4') and "wardrobe_small" in brush_name:
+            x = (numx * 40) + 20
+            y = (numy * 40) + 40
+    elif (size == (80,80)):
+        x = (numx * 40)
+        y = (numy * 40) + 40
+    return (x,y)
+
+
+
 
 
 def rotate_sprite_left():
@@ -345,10 +391,10 @@ def display_window():
 
     terrain.update()
     terrain.draw(screen)
-    map_elements.update()
-    map_elements.draw(screen)
     grid.update()
     grid.draw(screen)
+    map_elements.update()
+    map_elements.draw(screen)
 
     bookmarks_buttons.update()
     bookmarks_buttons.draw(screen)
@@ -475,7 +521,8 @@ while True:
                     rotate_sprite_right()
 
                 elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 1:
-                    map_elements.add(MapElement(brush.cursor, mouse_cords))
+                    snap_coord = roundCoords(mouse_cords[0], mouse_cords[1])
+                    map_elements.add(MapElement(brush.cursor, snap_coord))
 
                 if tool_selected == 1:
                     cursor = pygame.image.load(brush.cursor).convert_alpha()
@@ -492,7 +539,8 @@ while True:
                     tool_selected = 1
 
                 elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 1:
-                    map_elements.add(MapElement(brush.cursor, mouse_cords))
+                    snap_coord = roundCoords(mouse_cords[0], mouse_cords[1])
+                    map_elements.add(MapElement(brush.cursor, snap_coord))
 
                 if tool_selected == 1:
                     cursor = pygame.image.load(brush.cursor).convert_alpha()
@@ -500,21 +548,40 @@ while True:
                 if bushes.rect.collidepoint(mouse_cords):
                     brush = bushes
                     tool_selected = 1
+                if tree1.rect.collidepoint(mouse_cords):
+                    brush = tree1
+                    tool_selected = 1
+                if tree2.rect.collidepoint(mouse_cords):
+                    brush = tree2
+                    tool_selected = 1
+                if tree3.rect.collidepoint(mouse_cords):
+                    brush = tree3
+                    tool_selected = 1
 
                 if cactus1.rect.collidepoint(mouse_cords):
                     brush = cactus1
+                    tool_selected = 1
+                if cactus2.rect.collidepoint(mouse_cords):
+                    brush = cactus2
+                    tool_selected = 1
+                if cactus3.rect.collidepoint(mouse_cords):
+                    brush = cactus3
+                    tool_selected = 1
+                if cactus4.rect.collidepoint(mouse_cords):
+                    brush = cactus4
                     tool_selected = 1
 
                 if rock1.rect.collidepoint(mouse_cords):
                     brush = rock1
                     tool_selected = 1
-
-                if tree1.rect.collidepoint(mouse_cords):
-                    brush = tree1
+                if rock2.rect.collidepoint(mouse_cords):
+                    brush = rock2
                     tool_selected = 1
 
+
                 elif mouse_cords >= (canvas_pos, 0) and mouse_cords <= (1000, 720) and tool_selected == 1:
-                    map_elements.add(MapElement(brush.cursor, mouse_cords))
+                    snap_coord = roundCoords(mouse_cords[0],mouse_cords[1])
+                    map_elements.add(MapElement(brush.cursor, snap_coord))
 
                 if tool_selected == 1:
                     cursor = pygame.image.load(brush.cursor).convert_alpha()
